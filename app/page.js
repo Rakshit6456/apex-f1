@@ -1,65 +1,69 @@
-import Image from "next/image";
+"use client";
+import React, { useState, useEffect } from 'react';
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Standings from "./components/Standings";
+import RecentRaces from "./components/RecentRaces";
+import CircularGallery from "./components/CircularGallery";
+import { getNextRace, getDriverStandings, getConstructorStandings, getRecentRaces2025 } from './utils/f1Api';
 
 export default function Home() {
+  const [data, setData] = useState({
+    nextRace: null,
+    driverStandings: [],
+    constructorStandings: [],
+    recentRaces: []
+  });
+
+  const highlightItems = [
+    { image: "https://cdn-8.motorsport.com/images/mgl/YXypqgj6/s1200/charles-leclerc-ferrari-oscar-.webp", text: "Pre Season Testing" },
+    { image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLh1QjmZUWlBepduQwb1eWghFBZAeLt6uU4A&s", text: "Isack's first F1 podium" },
+    { image: "https://news.files.bbci.co.uk/include/extra/shorthand/assets/sport/4aplcod5v0/assets/Ky0cFCp72T/f1-miami_4-900x600.jpg", text: "McLaren Dominance" },
+    { image: "https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_3392/q_auto/v1740000000/trackside-images/2025/F1_Grand_Prix_of_Italy/2234141875.webp", text: "Max's comeback" },
+    { image: "https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_3392/q_auto/v1740000000/trackside-images/2025/F1_Grand_Prix_Of_China___Sprint__Qualifying/2206317183.webp", text: "China Sprint" },
+    { image: "https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_3392/q_auto/v1740000000/trackside-images/2025/F1_Grand_Prix_of_Brazil/2245877437.webp", text: "New Champion" },
+    { image: "https://www.thetimes.com/imageserver/image/%2F7180847d-5042-44cf-9dc2-bbe4bd45019c.jpg?crop=3099%2C3099%2C775%2C0", text: "Nico's Podium" },
+    { image: "https://media.formula1.com/image/upload/t_16by9Centre/f_auto/q_auto/v1758466180/trackside-images/2025/F1_Grand_Prix_of_Azerbaijan/2236574109.jpg", text: "Smooth Operation" }
+  ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const [nextRace, driverStandings, constructorStandings, recentRaces] = await Promise.all([
+        getNextRace(),
+        getDriverStandings(),
+        getConstructorStandings(),
+        getRecentRaces2025()
+      ]);
+      setData({ nextRace, driverStandings, constructorStandings, recentRaces });
+    };
+    fetchData();
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main className="bg-[#0A0A0A] min-h-screen text-white font-sans selection:bg-[#FF1801] selection:text-white pb-20">
+      <Navbar />
+      <Hero nextRace={data.nextRace} />
+
+      {/* Season Highlights Gallery */}
+      <section className="h-[600px] w-full relative bg-black/50 py-20 border-y border-white/5">
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10 text-center">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white uppercase italic tracking-tighter font-condensed">2025 <span className="text-[#FF1801]">Season Highlights</span></h2>
+        </div>
+        <CircularGallery
+          items={highlightItems}
+          bend={3}
+          textColor="#FF1801"
+          font="bold 20px var(--font-barlow-condensed)"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+
+      <Standings
+        driverStandings={data.driverStandings}
+        constructorStandings={data.constructorStandings}
+      />
+      <RecentRaces races={data.recentRaces} />
+
+
+    </main>
   );
 }
