@@ -210,6 +210,9 @@ class Media {
         this.plane.setParent(this.scene);
     }
     createTitle() {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) return;
+
         this.title = new Title({
             gl: this.gl,
             plane: this.plane,
@@ -224,17 +227,19 @@ class Media {
 
         const x = this.plane.position.x;
         const H = this.viewport.width / 2;
+        const isMobile = window.innerWidth < 768;
+        const currentBend = isMobile ? 0 : this.bend;
 
-        if (this.bend === 0) {
+        if (currentBend === 0) {
             this.plane.position.y = 0;
             this.plane.rotation.z = 0;
         } else {
-            const B_abs = Math.abs(this.bend);
+            const B_abs = Math.abs(currentBend);
             const R = (H * H + B_abs * B_abs) / (2 * B_abs);
             const effectiveX = Math.min(Math.abs(x), H);
 
             const arc = R - Math.sqrt(R * R - effectiveX * effectiveX);
-            if (this.bend > 0) {
+            if (currentBend > 0) {
                 this.plane.position.y = -arc;
                 this.plane.rotation.z = -Math.sign(x) * Math.asin(effectiveX / R);
             } else {
@@ -274,12 +279,12 @@ class Media {
 
         // Adjust plane scale based on device
         this.plane.scale.y = (this.viewport.height * (isMobile ? 800 : 900) * this.scale) / this.screen.height;
-        this.plane.scale.x = (this.viewport.width * (isMobile ? 600 : 700) * this.scale) / this.screen.width;
+        this.plane.scale.x = (this.viewport.width * (isMobile ? 650 : 700) * this.scale) / this.screen.width;
 
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
 
         // Dynamic padding based on device
-        this.padding = isMobile ? 0.8 : 2;
+        this.padding = isMobile ? 0.3 : 2;
         this.width = this.plane.scale.x + this.padding;
         this.widthTotal = this.width * this.length;
         this.x = this.width * this.index;

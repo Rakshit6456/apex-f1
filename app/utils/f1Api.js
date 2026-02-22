@@ -12,18 +12,9 @@ export const getNextRace = async () => {
 
 export const getDriverStandings = async () => {
     try {
-        // Try to get current season standings first
-        let res = await fetch('https://api.jolpi.ca/ergast/f1/current/driverStandings.json', { next: { revalidate: 3600 } });
-        let data = await res.json();
-        let standings = data.MRData.StandingsTable.StandingsLists[0]?.DriverStandings;
-
-        // If no standings for current season (pre-season), fetch previous season
-        if (!standings || standings.length === 0) {
-            res = await fetch('https://api.jolpi.ca/ergast/f1/2025/driverStandings.json', { next: { revalidate: 86400 } });
-            data = await res.json();
-            standings = data.MRData.StandingsTable.StandingsLists[0]?.DriverStandings;
-        }
-
+        const res = await fetch('https://api.jolpi.ca/ergast/f1/2025/driverStandings.json', { next: { revalidate: 86400 } });
+        const data = await res.json();
+        const standings = data.MRData.StandingsTable.StandingsLists[0]?.DriverStandings;
         return standings ? standings.slice(0, 3) : [];
     } catch (error) {
         console.error("Error fetching driver standings:", error);
@@ -33,18 +24,9 @@ export const getDriverStandings = async () => {
 
 export const getConstructorStandings = async () => {
     try {
-        // Try to get current season standings first
-        let res = await fetch('https://api.jolpi.ca/ergast/f1/current/constructorStandings.json', { next: { revalidate: 3600 } });
-        let data = await res.json();
-        let standings = data.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings;
-
-        // If no standings for current season (pre-season), fetch previous season
-        if (!standings || standings.length === 0) {
-            res = await fetch('https://api.jolpi.ca/ergast/f1/2025/constructorStandings.json', { next: { revalidate: 86400 } });
-            data = await res.json();
-            standings = data.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings;
-        }
-
+        const res = await fetch('https://api.jolpi.ca/ergast/f1/2025/constructorStandings.json', { next: { revalidate: 86400 } });
+        const data = await res.json();
+        const standings = data.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings;
         return standings ? standings.slice(0, 3) : [];
     } catch (error) {
         console.error("Error fetching constructor standings:", error);

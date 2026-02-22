@@ -5,6 +5,8 @@ import Hero from "./components/Hero";
 import Standings from "./components/Standings";
 import RecentRaces from "./components/RecentRaces";
 import CircularGallery from "./components/CircularGallery";
+import Features from "./components/Features";
+import ShinyText from "./components/ShinyText";
 import { getNextRace, getDriverStandings, getConstructorStandings, getRecentRaces2025 } from './utils/f1Api';
 
 export default function Home() {
@@ -27,16 +29,30 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    const fetchData = async () => {
-      const [nextRace, driverStandings, constructorStandings, recentRaces] = await Promise.all([
-        getNextRace(),
-        getDriverStandings(),
-        getConstructorStandings(),
-        getRecentRaces2025()
-      ]);
-      setData({ nextRace, driverStandings, constructorStandings, recentRaces });
+    const fetchNextRace = async () => {
+      const nextRace = await getNextRace();
+      setData(prev => ({ ...prev, nextRace }));
     };
-    fetchData();
+
+    const fetchDriverStandings = async () => {
+      const driverStandings = await getDriverStandings();
+      setData(prev => ({ ...prev, driverStandings }));
+    };
+
+    const fetchConstructorStandings = async () => {
+      const constructorStandings = await getConstructorStandings();
+      setData(prev => ({ ...prev, constructorStandings }));
+    };
+
+    const fetchRecentRaces = async () => {
+      const recentRaces = await getRecentRaces2025();
+      setData(prev => ({ ...prev, recentRaces }));
+    };
+
+    fetchNextRace();
+    fetchDriverStandings();
+    fetchConstructorStandings();
+    fetchRecentRaces();
   }, []);
 
   return (
@@ -47,7 +63,9 @@ export default function Home() {
       {/* Season Highlights Gallery */}
       <section className="h-[450px] md:h-[600px] w-full relative bg-black/50 py-10 md:py-20 border-y border-white/5 overflow-hidden">
         <div className="absolute top-6 md:top-10 left-1/2 -translate-x-1/2 z-10 text-center w-full px-4">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase italic tracking-tighter font-condensed">2025 <span className="text-[#FF1801]">Season Highlights</span></h2>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase italic tracking-tighter font-condensed">
+            2025 <ShinyText text="Season Highlights" className="text-[#FF1801] inline-block" />
+          </h2>
         </div>
         <CircularGallery
           items={highlightItems}
@@ -61,6 +79,7 @@ export default function Home() {
         driverStandings={data.driverStandings}
         constructorStandings={data.constructorStandings}
       />
+      <Features />
       <RecentRaces races={data.recentRaces} />
 
 
