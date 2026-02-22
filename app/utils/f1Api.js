@@ -195,26 +195,20 @@ export const getDriversForSeason = async (year) => {
 
 export const getDriverComparisonStats = async (year, driverId) => {
     try {
-        // Fetch standings for points, wins, and position
         const standingsRes = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/drivers/${driverId}/driverStandings.json`, { next: { revalidate: 86400 } });
         const standingsData = await standingsRes.json();
         const standing = standingsData.MRData.StandingsTable.StandingsLists[0]?.DriverStandings[0];
 
-        // Fetch all results to count podiums
         const resultsRes = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/drivers/${driverId}/results.json?limit=100`, { next: { revalidate: 86400 } });
         const resultsData = await resultsRes.json();
         const races = resultsData.MRData.RaceTable.Races || [];
-
         const podiums = races.filter(r => parseInt(r.Results[0].position) <= 3).length;
 
-        // Fetch qualifying for poles
         const qualifyRes = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/drivers/${driverId}/qualifying.json`, { next: { revalidate: 86400 } });
         const qualifyData = await qualifyRes.json();
         const qualifying = qualifyData.MRData.RaceTable.Races || [];
         const poles = qualifying.filter(q => parseInt(q.QualifyingResults[0].position) === 1).length;
 
-        // Get best lap (this is tricky as Ergast doesn't have a single "best lap of season" endpoint easily)
-        // We'll just take the fastest lap from their most recent race or similar if available
         const bestLap = races.find(r => r.Results[0].FastestLap)?.Results[0].FastestLap.Time.time || "N/A";
 
         return {
@@ -233,4 +227,76 @@ export const getDriverComparisonStats = async (year, driverId) => {
         console.error(`Error fetching comparison stats for ${driverId} in ${year}:`, error);
         return null;
     }
+};
+
+export const getCircuitHistoricalResults = async (circuitId) => {
+    try {
+        const years = [2024, 2023, 2022, 2021, 2019];
+        const results = await Promise.all(years.map(async (year) => {
+            try {
+                const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/circuits/${circuitId}/results.json`, { next: { revalidate: 604800 } });
+                if (!res.ok) return null;
+                const data = await res.json();
+                return data.MRData.RaceTable.Races[0] || null;
+            } catch (e) { return null; }
+        }));
+        return results.filter(Boolean);
+    } catch (error) {
+        console.error(`Error fetching historical results for ${circuitId}:`, error);
+        return [];
+    }
+};
+
+export const getDriverForm = async (driverId) => {
+    try {
+        const res = await fetch(`https://api.jolpi.ca/ergast/f1/current/drivers/${driverId}/results.json?limit=5`, { next: { revalidate: 86400 } });
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.MRData.RaceTable.Races || [];
+    } catch (error) {
+        console.error(`Error fetching form for ${driverId}:`, error);
+        return [];
+    }
+};
+
+export const calculateRaceProbabilities = (drivers, historicalResults, currentStandings) => {
+    if (!drivers || !currentStandings) return [];
+
+    const results = drivers.map(driver => {
+        let score = 0;
+        const standing = currentStandings.find(s => s.Driver.driverId === driver.driverId);
+        const points = standing ? parseInt(standing.points) : 0;
+
+        // Form score based on current points
+        score += (points / 500) * 50;
+
+        // History score
+        const trackHistory = historicalResults.map(race => {
+            const result = race.Results.find(r => r.Driver.driverId === driver.driverId);
+            if (!result) return 0;
+            const pos = parseInt(result.position);
+            if (pos === 1) return 25;
+            if (pos <= 3) return 15;
+            if (pos <= 10) return 5;
+            return 0;
+        });
+
+        const historyScore = trackHistory.length > 0
+            ? (trackHistory.reduce((a, b) => a + b, 0) / (trackHistory.length * 25)) * 40
+            : 10;
+
+        score += historyScore;
+
+        // Random variance (The "F1 factor")
+        score += Math.random() * 10;
+
+        return {
+            driverId: driver.driverId,
+            name: driver.familyName.toUpperCase(),
+            team: standing?.Constructors[0]?.name || "N/A",
+            score: Math.min(98, Math.max(2, Math.round(score)))
+        };
+    });
+
+    return results.sort((a, b) => b.score - a.score);
 };

@@ -133,7 +133,7 @@ export default function HeadToHead() {
             </header>
 
             {/* DRIVER SELECTOR */}
-            <section className="driver-selector fade-up max-w-[1400px] mx-auto px-12">
+            <section className="driver-selector fade-up max-w-[1400px] mx-auto px-6 md:px-12">
                 <div className="selector-box" onClick={() => openModal(1)}>
                     <div className="selector-label">DRIVER 1</div>
                     <div className="selector-driver">
@@ -173,7 +173,7 @@ export default function HeadToHead() {
 
             {/* MAIN COMPARISON */}
             {driver1 && driver2 && (
-                <section className="comparison-section px-12 pb-24">
+                <section className="comparison-section px-6 md:px-12 pb-24">
                     <div className="comparison-header fade-up">
                         <div className="driver-header-side">
                             <div className="ghost-num text-[#FF1801]">{stats1?.number}</div>
@@ -296,17 +296,45 @@ export default function HeadToHead() {
 }
 
 function StatRow({ label, val1, val2, winner }) {
+    // Parsing values for bars
+    const v1 = parseFloat(val1 || 0);
+    const v2 = parseFloat(val2 || 0);
+    const total = v1 + v2 === 0 ? 1 : v1 + v2;
+    const p1 = (v1 / total) * 100;
+    const p2 = (v2 / total) * 100;
+
     return (
-        <div className="stat-row">
-            <div className={`stat-val ${winner === 'v1' ? 'winner' : 'loser'}`}>
-                {val1 || '0'}
+        <div className="flex flex-col border-b border-white/5 last:border-0 group">
+            <div className="stat-row border-none">
+                <div className={`stat-val ${winner === 'v1' ? 'winner' : 'loser'}`}>
+                    {val1 || '0'}
+                </div>
+                <div className="stat-label-cell">
+                    <div className="stat-label uppercase font-mono text-[9px] tracking-widest text-gray-500 group-hover:text-[#FF1801] transition-colors">{label}</div>
+                </div>
+                <div className={`stat-val right ${winner === 'v2' ? 'winner' : 'loser'}`}>
+                    {val2 || '0'}
+                </div>
             </div>
-            <div className="stat-label-cell">
-                <div className="stat-label">{label}</div>
-            </div>
-            <div className={`stat-val right ${winner === 'v2' ? 'winner' : 'loser'}`}>
-                {val2 || '0'}
-            </div>
+
+            {/* Visual Bars */}
+            {label !== "BEST LAP" && label !== "POS" && (
+                <div className="flex h-1 px-12 md:px-36 mb-6 gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div className="flex-1 flex justify-end">
+                        <div
+                            className={`h-full transition-all duration-1000 ease-out rounded-l-full ${winner === 'v1' ? 'bg-[#FFD700]' : 'bg-white/10'}`}
+                            style={{ width: `${p1}%`, minWidth: '4px' }}
+                        />
+                    </div>
+                    <div className="w-[1px] bg-white/20 h-full" />
+                    <div className="flex-1 flex justify-start">
+                        <div
+                            className={`h-full transition-all duration-1000 ease-out rounded-r-full ${winner === 'v2' ? 'bg-[#FFD700]' : 'bg-white/10'}`}
+                            style={{ width: `${p2}%`, minWidth: '4px' }}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
