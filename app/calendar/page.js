@@ -64,22 +64,22 @@ export default function CalendarPage() {
             <Navbar />
 
             {/* Header */}
-            <header className="pt-44 pb-20 px-12 relative overflow-hidden bg-[#0A0A0A] border-b border-white/5">
-                <div className="absolute right-20 top-1/2 -translate-y-1/2 text-[20rem] font-black text-white/[0.05] font-condensed pointer-events-none select-none italic">2026</div>
+            <header className="pt-32 md:pt-44 pb-12 md:pb-20 px-6 md:px-12 relative overflow-hidden bg-[#0A0A0A] border-b border-white/5">
+                <div className="absolute right-0 md:right-20 top-1/2 -translate-y-1/2 text-9xl md:text-[20rem] font-black text-white/[0.05] font-condensed pointer-events-none select-none italic translate-x-1/2 md:translate-x-0">2026</div>
                 <div className="container mx-auto relative z-10">
                     <div className="flex items-center space-x-4 mb-6">
-                        <div className="w-12 h-[1px] bg-[#FF1801]"></div>
-                        <span className="text-[#FF1801] uppercase tracking-[0.4em] text-xs font-bold font-condensed">World Championship Schedule</span>
+                        <div className="w-8 md:w-12 h-[1px] bg-[#FF1801]"></div>
+                        <span className="text-[#FF1801] uppercase tracking-[0.2em] md:tracking-[0.4em] text-[10px] md:text-xs font-bold font-condensed">World Championship Schedule</span>
                     </div>
-                    <h1 className="text-7xl md:text-9xl font-black text-white leading-[0.85] mb-8 uppercase italic font-condensed">
+                    <h1 className="text-5xl md:text-9xl font-black text-white leading-[0.85] mb-8 uppercase italic font-condensed">
                         Race<br />
                         <span className="text-[#FF1801]">Calendar</span>
                     </h1>
-                    <p className="text-gray-400 text-lg max-w-xl font-light leading-relaxed italic">
+                    <p className="text-gray-400 text-base md:text-lg max-w-xl font-light leading-relaxed italic">
                         24 rounds across 21 countries. Follow the complete 2026 F1 season schedule with all circuits and dates.
                     </p>
 
-                    <div className="flex flex-wrap gap-12 mt-12">
+                    <div className="flex flex-wrap gap-8 md:gap-12 mt-12">
                         <Stat label="TOTAL RACES" val={races.length} color="text-white" />
                         <Stat label="COMPLETED" val={completedRaces} color="text-yellow-400" />
                         <Stat label="REMAINING" val={remainingRaces} color="text-[#FF1801]" />
@@ -89,61 +89,61 @@ export default function CalendarPage() {
 
             {/* Next Race Banner */}
             {nextRace && (
-                <section className="bg-gradient-to-r from-[#8B0000] to-[#FF1801] py-12 px-12 border-b border-white/10 relative overflow-hidden">
-                    <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-                        <div>
+                <section className="bg-gradient-to-r from-[#8B0000] to-[#FF1801] py-10 md:py-12 px-6 md:px-12 border-b border-white/10 relative overflow-hidden">
+                    <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+                        <div className="text-center lg:text-left">
                             <span className="text-white/60 font-condensed text-[10px] tracking-[0.4em] uppercase font-bold">Next Race</span>
-                            <h2 className="text-4xl font-black text-white font-condensed uppercase italic tracking-tight">{nextRace.raceName}</h2>
-                            <p className="text-white/80 font-condensed tracking-widest text-xs uppercase mt-1">
+                            <h2 className="text-3xl md:text-4xl font-black text-white font-condensed uppercase italic tracking-tight">{nextRace.raceName}</h2>
+                            <p className="text-white/80 font-condensed tracking-widest text-[10px] md:text-xs uppercase mt-1">
                                 {getFlagEmoji(nextRace.Circuit.Location.country)} {nextRace.Circuit.Location.locality}, {nextRace.Circuit.Location.country} · Round {nextRace.round}
                             </p>
                         </div>
 
-                        <div className="flex space-x-6 items-center bg-black/20 backdrop-blur-md p-6 rounded-sm border border-white/10">
+                        <div className="flex space-x-4 md:space-x-6 items-center bg-black/20 backdrop-blur-md p-4 md:p-6 rounded-sm border border-white/10">
                             <div className="text-center">
-                                <span className="block text-4xl font-black text-white font-condensed leading-none">
+                                <span className="block text-2xl md:text-4xl font-black text-white font-condensed leading-none">
                                     {Math.floor((new Date(nextRace.date) - now) / (1000 * 60 * 60 * 24)).toString().padStart(2, '0')}
                                 </span>
-                                <span className="text-[10px] text-white/50 font-bold tracking-widest uppercase">Days</span>
+                                <span className="text-[9px] md:text-[10px] text-white/50 font-bold tracking-widest uppercase">Days</span>
                             </div>
-                            <div className="h-10 w-[1px] bg-white/10"></div>
+                            <div className="h-8 md:h-10 w-[1px] bg-white/10"></div>
                             <div className="text-center">
-                                <span className="block text-4xl font-black text-white font-condensed leading-none">
+                                <span className="block text-2xl md:text-4xl font-black text-white font-condensed leading-none">
                                     {Math.floor(((new Date(nextRace.date) - now) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0')}
                                 </span>
-                                <span className="text-[10px] text-white/50 font-bold tracking-widest uppercase">Hrs</span>
+                                <span className="text-[9px] md:text-[10px] text-white/50 font-bold tracking-widest uppercase">Hrs</span>
                             </div>
-                            <div className="h-10 w-[1px] bg-white/10"></div>
+                            <div className="h-8 md:h-10 w-[1px] bg-white/10"></div>
                             <div className="text-center">
-                                <span className="block text-4xl font-black text-white font-condensed leading-none">
+                                <span className="block text-2xl md:text-4xl font-black text-white font-condensed leading-none">
                                     {Math.floor(((new Date(nextRace.date) - now) % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0')}
                                 </span>
-                                <span className="text-[10px] text-white/50 font-bold tracking-widest uppercase">Min</span>
+                                <span className="text-[9px] md:text-[10px] text-white/50 font-bold tracking-widest uppercase">Min</span>
                             </div>
                         </div>
 
-                        <div className="text-right">
-                            <div className="text-xl font-black text-white font-condensed tracking-widest uppercase italic">
+                        <div className="text-center lg:text-right">
+                            <div className="text-lg md:text-xl font-black text-white font-condensed tracking-widest uppercase italic">
                                 {new Date(nextRace.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                             </div>
-                            <div className="text-[10px] text-white/60 font-condensed tracking-[0.2em] uppercase font-bold mt-1">// {nextRace.Circuit.circuitName}</div>
+                            <div className="text-[9px] md:text-[10px] text-white/60 font-condensed tracking-[0.1em] md:tracking-[0.2em] uppercase font-bold mt-1 max-w-[200px] md:max-w-none mx-auto">// {nextRace.Circuit.circuitName}</div>
                         </div>
                     </div>
                 </section>
             )}
 
             {/* Season Progress */}
-            <section className="py-12 px-12 bg-[#0D0D0D] border-b border-white/5">
+            <section className="py-12 px-6 md:px-12 bg-[#0D0D0D] border-b border-white/5">
                 <div className="container mx-auto">
-                    <div className="flex justify-between items-end mb-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
                         <h3 className="text-2xl font-black text-white font-condensed italic uppercase tracking-tight">Season Progress</h3>
-                        <div className="flex gap-12">
+                        <div className="flex gap-8 md:gap-12">
                             <div className="text-right">
-                                <div className="text-3xl font-black text-white font-condensed items-baseline">{completedRaces}</div>
+                                <div className="text-2xl md:text-3xl font-black text-white font-condensed items-baseline">{completedRaces}</div>
                                 <div className="text-[9px] text-gray-500 font-bold tracking-widest uppercase">Races Done</div>
                             </div>
                             <div className="text-right">
-                                <div className="text-3xl font-black text-[#FF1801] font-condensed items-baseline">{remainingRaces}</div>
+                                <div className="text-2xl md:text-3xl font-black text-[#FF1801] font-condensed items-baseline">{remainingRaces}</div>
                                 <div className="text-[9px] text-gray-500 font-bold tracking-widest uppercase">Races Left</div>
                             </div>
                         </div>
@@ -153,25 +153,25 @@ export default function CalendarPage() {
                             className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-[#8B0000] to-[#FF1801] transition-all duration-1000 ease-out flex items-center justify-end px-4"
                             style={{ width: `${progress}%` }}
                         >
-                            <span className="text-xs font-black text-white font-condensed italic">{Math.round(progress)}%</span>
+                            <span className="text-[10px] md:text-xs font-black text-white font-condensed italic">{Math.round(progress)}%</span>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Filters */}
-            <div className="relative z-40 bg-[#0A0A0A] py-6 px-12 border-b border-white/5">
-                <div className="container mx-auto flex justify-between items-center">
-                    <div className="flex border border-white/10 rounded-sm overflow-hidden">
+            <div className="relative z-40 bg-[#0A0A0A] py-6 px-6 md:px-12 border-b border-white/5">
+                <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div className="flex border border-white/10 rounded-sm overflow-hidden w-full md:w-auto">
                         <button
                             onClick={() => setFilter('ALL')}
-                            className={`px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all ${filter === 'ALL' ? 'bg-[#FF1801] text-white' : 'text-gray-500 hover:bg-white/5'}`}
+                            className={`flex-1 md:flex-none px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all ${filter === 'ALL' ? 'bg-[#FF1801] text-white' : 'text-gray-500 hover:bg-white/5'}`}
                         >
                             Grid View
                         </button>
                     </div>
 
-                    <div className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-4 md:space-x-6 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 whitespace-nowrap">
                         <span className="text-[10px] text-gray-500 font-bold tracking-widest uppercase">Filter:</span>
                         <div className="flex space-x-3">
                             {['ALL', 'UPCOMING', 'PAST'].map(f => (
@@ -189,7 +189,7 @@ export default function CalendarPage() {
             </div>
 
             {/* Grid */}
-            <section className="py-20 px-12">
+            <section className="py-12 md:py-20 px-6 md:px-12">
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredRaces.map((race, index) => {
                         const isPast = new Date(race.date) < now && race.round !== nextRace?.round;

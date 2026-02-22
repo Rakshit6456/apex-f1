@@ -58,11 +58,11 @@ export default function Standings({ driverStandings, constructorStandings }) {
     })) : [];
 
     return (
-        <section className="bg-[#121212] py-20 px-8">
+        <section className="bg-[#121212] py-12 md:py-20 px-6 md:px-8">
             <div className="container mx-auto">
-                <div className="mb-12">
-                    <h4 className="text-[#FF1801] text-xs font-bold tracking-[0.4em] uppercase mb-2 font-condensed">2025 World Championship</h4>
-                    <h2 className="text-5xl md:text-6xl font-extrabold text-white uppercase italic tracking-tighter font-condensed leading-[0.9]">
+                <div className="mb-10 md:mb-12">
+                    <h4 className="text-[#FF1801] text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-2 font-condensed">2025 World Championship</h4>
+                    <h2 className="text-4xl md:text-6xl font-extrabold text-white uppercase italic tracking-tighter font-condensed leading-[0.9]">
                         Standings<br />
                         <span className="text-[#FF1801]">Snapshots</span>
                     </h2>

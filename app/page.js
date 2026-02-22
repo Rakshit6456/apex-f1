@@ -45,15 +45,15 @@ export default function Home() {
       <Hero nextRace={data.nextRace} />
 
       {/* Season Highlights Gallery */}
-      <section className="h-[600px] w-full relative bg-black/50 py-20 border-y border-white/5">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white uppercase italic tracking-tighter font-condensed">2025 <span className="text-[#FF1801]">Season Highlights</span></h2>
+      <section className="h-[450px] md:h-[600px] w-full relative bg-black/50 py-10 md:py-20 border-y border-white/5 overflow-hidden">
+        <div className="absolute top-6 md:top-10 left-1/2 -translate-x-1/2 z-10 text-center w-full px-4">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase italic tracking-tighter font-condensed">2025 <span className="text-[#FF1801]">Season Highlights</span></h2>
         </div>
         <CircularGallery
           items={highlightItems}
           bend={3}
           textColor="#FF1801"
-          font="bold 20px var(--font-barlow-condensed)"
+          font="bold 16px var(--font-barlow-condensed)"
         />
       </section>
 

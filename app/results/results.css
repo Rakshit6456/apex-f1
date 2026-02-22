@@ -785,3 +785,124 @@
     letter-spacing: 2px;
     text-transform: uppercase;
 }
+
+/* ══════════════════════════════════
+     RESPONSIVE DESIGN
+   ══════════════════════════════════ */
+
+@media (max-width: 1024px) {
+    .race-header-banner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 40px 24px;
+        text-align: center;
+    }
+
+    .race-info-left {
+        align-items: center;
+    }
+
+    .podium-visual {
+        justify-content: center;
+    }
+
+    .race-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 100px 24px 32px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+    }
+
+    .page-title {
+        font-size: 48px;
+    }
+
+    .header-watermark {
+        font-size: 12rem;
+    }
+
+    .header-stats {
+        gap: 24px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .header-stat-val {
+        font-size: 32px;
+    }
+
+    .season-select-container {
+        padding: 16px 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .season-select {
+        width: 100%;
+    }
+
+    .race-selector {
+        padding: 0 24px;
+    }
+
+    .results-section {
+        padding: 32px 16px;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .results-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .race-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .podium-visual {
+        transform: scale(0.9);
+    }
+
+    .race-title-big {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 36px;
+    }
+
+    .header-stat-val {
+        font-size: 28px;
+    }
+
+    .podium-visual {
+        transform: scale(0.8);
+        height: 120px;
+    }
+
+    .podium-bar {
+        width: 60px;
+    }
+}
