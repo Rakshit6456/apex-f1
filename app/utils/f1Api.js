@@ -181,3 +181,56 @@ export const getRaceResults = async (year, round) => {
         return null;
     }
 };
+export const getDriversForSeason = async (year) => {
+    try {
+        const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/drivers.json`, { next: { revalidate: 86400 } });
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.MRData.DriverTable.Drivers;
+    } catch (error) {
+        console.error(`Error fetching drivers for ${year}:`, error);
+        return [];
+    }
+};
+
+export const getDriverComparisonStats = async (year, driverId) => {
+    try {
+        // Fetch standings for points, wins, and position
+        const standingsRes = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/drivers/${driverId}/driverStandings.json`, { next: { revalidate: 86400 } });
+        const standingsData = await standingsRes.json();
+        const standing = standingsData.MRData.StandingsTable.StandingsLists[0]?.DriverStandings[0];
+
+        // Fetch all results to count podiums
+        const resultsRes = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/drivers/${driverId}/results.json?limit=100`, { next: { revalidate: 86400 } });
+        const resultsData = await resultsRes.json();
+        const races = resultsData.MRData.RaceTable.Races || [];
+
+        const podiums = races.filter(r => parseInt(r.Results[0].position) <= 3).length;
+
+        // Fetch qualifying for poles
+        const qualifyRes = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/drivers/${driverId}/qualifying.json`, { next: { revalidate: 86400 } });
+        const qualifyData = await qualifyRes.json();
+        const qualifying = qualifyData.MRData.RaceTable.Races || [];
+        const poles = qualifying.filter(q => parseInt(q.QualifyingResults[0].position) === 1).length;
+
+        // Get best lap (this is tricky as Ergast doesn't have a single "best lap of season" endpoint easily)
+        // We'll just take the fastest lap from their most recent race or similar if available
+        const bestLap = races.find(r => r.Results[0].FastestLap)?.Results[0].FastestLap.Time.time || "N/A";
+
+        return {
+            points: standing?.points || "0",
+            wins: standing?.wins || "0",
+            position: standing?.position || "N/A",
+            podiums: podiums.toString(),
+            poles: poles.toString(),
+            bestLap,
+            team: standing?.Constructors[0]?.name || "N/A",
+            number: standing?.Driver.permanentNumber || "N/A",
+            code: standing?.Driver.code || (standing?.Driver.familyName || '???').substring(0, 3).toUpperCase(),
+            nationality: standing?.Driver.nationality || ""
+        };
+    } catch (error) {
+        console.error(`Error fetching comparison stats for ${driverId} in ${year}:`, error);
+        return null;
+    }
+};

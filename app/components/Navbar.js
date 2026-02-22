@@ -27,6 +27,7 @@ export default function Navbar() {
     { name: 'Calendar', href: '/calendar' },
     { name: 'Results', href: '/results' },
     { name: 'Standings', href: '/standings' },
+    { name: 'Head-to-Head', href: '/head-to-head' },
   ];
 
   return (
@@ -114,13 +115,6 @@ export default function Navbar() {
             );
           })}
         </div>
-
-        {/* <div className="p-8 border-t border-white/5 space-y-4">
-          <div className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.3em]">Official Partner</div>
-          <div className="bg-white/5 p-4 rounded border border-white/10 grayscale hover:grayscale-0 transition-all cursor-pointer">
-            <span className="text-white font-black italic tracking-tighter text-xl underline decoration-[#FF1801]">APEX</span> PERFORMANCE
-          </div>
-        </div> */}
       </div>
     </>
   );

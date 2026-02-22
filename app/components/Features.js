@@ -47,7 +47,7 @@ const Features = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-4xl md:text-6xl font-extrabold text-white uppercase italic tracking-tighter mb-4">
-                        Project <ShinyText text="Features" className="text-[#FF1801] inline-block" />
+ <ShinyText text="Features" className="text-[#FF1801] inline-block" />
                     </h2>
                     <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto font-light">
                         Everything you need for the ultimate 2025 Formula 1 season coverage.

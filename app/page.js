@@ -59,6 +59,7 @@ export default function Home() {
     <main className="bg-[#0A0A0A] min-h-screen text-white font-sans selection:bg-[#FF1801] selection:text-white pb-20">
       <Navbar />
       <Hero nextRace={data.nextRace} />
+      <Features />
 
       {/* Season Highlights Gallery */}
       <section className="h-[450px] md:h-[600px] w-full relative bg-black/50 py-10 md:py-20 border-y border-white/5 overflow-hidden">
@@ -67,6 +68,7 @@ export default function Home() {
             2025 <ShinyText text="Season Highlights" className="text-[#FF1801] inline-block" />
           </h2>
         </div>
+        
         <CircularGallery
           items={highlightItems}
           bend={3}
@@ -79,7 +81,7 @@ export default function Home() {
         driverStandings={data.driverStandings}
         constructorStandings={data.constructorStandings}
       />
-      <Features />
+      
       <RecentRaces races={data.recentRaces} />
 
 
