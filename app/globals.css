@@ -54,10 +54,8 @@ body {
 
 /* Page Unification Utilities */
 .container-custom {
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
+  max-width: none;
 }
 
 @keyframes page-fade-in {

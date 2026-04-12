@@ -34,7 +34,7 @@ export default function Navbar() {
     <>
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 px-6 md:px-12 py-6 ${scrolled ? 'bg-black/80 backdrop-blur-md py-4 border-b border-white/10' : 'bg-transparent'
         }`}>
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between">
+        <div className="container-custom flex items-center justify-between">
           <Link href="/" className="text-3xl font-extrabold tracking-tighter font-condensed italic flex items-center group">
             <span className="text-[#FF1801] group-hover:scale-110 transition-transform">AP</span>
             <span className="text-white">EX</span>
