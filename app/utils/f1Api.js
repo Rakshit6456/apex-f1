@@ -198,7 +198,14 @@ export const getSeasonSchedule = async (year) => {
     }
 };
 
+import { results2026 } from '../data/results2026';
+
 export const getRaceResults = async (year, round) => {
+    // Return mock data for 2026 if available
+    if (year === 2026 && results2026[round]) {
+        return results2026[round];
+    }
+
     try {
         const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/${round}/results.json`, { next: { revalidate: 86400 } });
         if (!res.ok) return null;

@@ -122,7 +122,7 @@ function ResultsContent() {
     }, [selectedSeason]);
 
     useEffect(() => {
-        if (!selectedRound || selectedSeason === 2026) return;
+        if (!selectedRound) return;
 
         const fetchResults = async () => {
             setLoading(true);
