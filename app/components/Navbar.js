@@ -62,7 +62,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-6">
             <div className="hidden sm:block">
               <span className="border border-[#FF1801]/30 text-white px-4 py-1.5 rounded-sm text-[10px] font-bold uppercase font-condensed tracking-[0.2em] bg-[#FF1801]/10">
-                2025 SEASON
+                2026 SEASON
               </span>
             </div>
 

@@ -1,0 +1,52 @@
+/* Standings Custom Scope Base */
+.standings-table-container {
+    overflow-x: auto;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+/* Podium Row Highlight */
+.podium-row {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.0) 100%);
+}
+
+.s-pos {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.s-pos.p1 {
+    color: var(--yellow);
+}
+
+.s-pos.p2 {
+    color: #C0C0C0;
+}
+
+.s-pos.p3 {
+    color: #CD7F32;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-up {
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none;
+    }
+}

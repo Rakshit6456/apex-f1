@@ -64,7 +64,7 @@ const RaceCard = ({ race, isLatest }) => {
 
             <div className="mt-6 flex justify-start">
                 <Link
-                    href={`/results?season=2025&round=${race.round}`}
+                    href={`/results?season=2026&round=${race.round}`}
                     className="text-[10px] uppercase tracking-widest border border-white/20 rounded-full px-4 py-2 text-white hover:bg-white/10 transition-colors"
                 >
                     Full Standings &rarr;
@@ -82,14 +82,14 @@ export default function RecentRaces({ races }) {
             <div className="container mx-auto">
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
                     <div>
-                        <h4 className="text-[#FF1801] text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-2 font-condensed">2025 Season</h4>
+                        <h4 className="text-[#FF1801] text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-2 font-condensed">2026 Season</h4>
                         <h2 className="text-4xl md:text-6xl font-extrabold text-white uppercase italic tracking-tighter font-condensed leading-[0.9]">
                             Recent<br />
                             <span className="text-[#FF1801]">Races</span>
                         </h2>
                     </div>
                     <Link
-                        href="/results?season=2025"
+                        href="/results?season=2026"
                         className="text-xs font-bold uppercase tracking-[0.2em] border border-white/10 rounded-sm px-6 py-3 text-white hover:bg-white/5 transition-colors font-condensed italic skew-x-[-12deg] w-fit"
                     >
                         <span className="block skew-x-[12deg]">All Results &rarr;</span>

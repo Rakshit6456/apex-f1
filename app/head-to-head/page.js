@@ -7,7 +7,7 @@ import './head-to-head.css';
 const years = Array.from({ length: 2026 - 2005 + 1 }, (_, i) => (2026 - i).toString());
 
 export default function HeadToHead() {
-    const [selectedYear, setSelectedYear] = useState('2025');
+    const [selectedYear, setSelectedYear] = useState('2026');
     const [loading, setLoading] = useState(false);
     const [drivers, setDrivers] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);

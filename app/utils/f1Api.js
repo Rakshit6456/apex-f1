@@ -12,7 +12,7 @@ export const getNextRace = async () => {
 
 export const getDriverStandings = async () => {
     try {
-        const res = await fetch('https://api.jolpi.ca/ergast/f1/2025/driverStandings.json', { next: { revalidate: 86400 } });
+        const res = await fetch('https://api.jolpi.ca/ergast/f1/current/driverStandings.json', { next: { revalidate: 86400 } });
         const data = await res.json();
         const standings = data.MRData.StandingsTable.StandingsLists[0]?.DriverStandings;
         return standings ? standings.slice(0, 3) : [];
@@ -24,12 +24,34 @@ export const getDriverStandings = async () => {
 
 export const getConstructorStandings = async () => {
     try {
-        const res = await fetch('https://api.jolpi.ca/ergast/f1/2025/constructorStandings.json', { next: { revalidate: 86400 } });
+        const res = await fetch('https://api.jolpi.ca/ergast/f1/current/constructorStandings.json', { next: { revalidate: 86400 } });
         const data = await res.json();
         const standings = data.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings;
         return standings ? standings.slice(0, 3) : [];
     } catch (error) {
         console.error("Error fetching constructor standings:", error);
+        return [];
+    }
+};
+
+export const getFullDriverStandings = async (year) => {
+    try {
+        const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/driverStandings.json`, { next: { revalidate: 86400 } });
+        const data = await res.json();
+        return data.MRData.StandingsTable.StandingsLists[0]?.DriverStandings || [];
+    } catch (error) {
+        console.error(`Error fetching full driver standings for ${year}:`, error);
+        return [];
+    }
+};
+
+export const getFullConstructorStandings = async (year) => {
+    try {
+        const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/constructorStandings.json`, { next: { revalidate: 86400 } });
+        const data = await res.json();
+        return data.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings || [];
+    } catch (error) {
+        console.error(`Error fetching full constructor standings for ${year}:`, error);
         return [];
     }
 };
@@ -49,21 +71,27 @@ const getSafetyCarCount = (raceControlMessages = []) => {
     }).length;
 };
 
-export const getRecentRaces2025 = async () => {
+export const getRecentRacesCurrent = async () => {
     try {
-        const scheduleRes = await fetch('https://api.jolpi.ca/ergast/f1/2025.json', { next: { revalidate: 86400 } });
+        // Fetch 2026 schedule or current schedule
+        const scheduleRes = await fetch('https://api.jolpi.ca/ergast/f1/current.json', { next: { revalidate: 86400 } });
         if (!scheduleRes.ok) return [];
         const scheduleData = await scheduleRes.json();
         const races = scheduleData?.MRData?.RaceTable?.Races || [];
         if (races.length === 0) return [];
 
-        const lastThree = races.slice(-3).reverse();
+        const now = new Date();
+        const completedRaces = races.filter(race => new Date(race.date) < now);
+        if (completedRaces.length === 0) return []; // No races completed yet in current season
 
-        const sessionsRes = await fetch('https://api.openf1.org/v1/sessions?year=2025&session_name=Race', { next: { revalidate: 86400 } });
+        const lastThree = completedRaces.slice(-3).reverse();
+
+        const currentYear = new Date().getFullYear();
+        const sessionsRes = await fetch(`https://api.openf1.org/v1/sessions?year=${currentYear}&session_name=Race`, { next: { revalidate: 86400 } });
         const sessions = sessionsRes.ok ? await sessionsRes.json() : [];
 
         const raceDetails = await Promise.all(lastThree.map(async (race) => {
-            const resultsRes = await fetch(`https://api.jolpi.ca/ergast/f1/2025/${race.round}/results.json`, { next: { revalidate: 86400 } });
+            const resultsRes = await fetch(`https://api.jolpi.ca/ergast/f1/current/${race.round}/results.json`, { next: { revalidate: 86400 } });
             if (!resultsRes.ok) return null;
             const resultsData = await resultsRes.json();
             const raceResults = resultsData?.MRData?.RaceTable?.Races?.[0]?.Results || [];
@@ -116,9 +144,9 @@ export const getRecentRaces2025 = async () => {
     }
 };
 
-export const getFullSchedule2025 = async () => {
+export const getFullScheduleCurrent = async () => {
     try {
-        const res = await fetch('https://api.jolpi.ca/ergast/f1/2025.json', { next: { revalidate: 86400 } });
+        const res = await fetch('https://api.jolpi.ca/ergast/f1/current.json', { next: { revalidate: 86400 } });
         if (!res.ok) return [];
         const data = await res.json();
         return data.MRData.RaceTable.Races || [];
@@ -225,6 +253,97 @@ export const getDriverComparisonStats = async (year, driverId) => {
         };
     } catch (error) {
         console.error(`Error fetching comparison stats for ${driverId} in ${year}:`, error);
+        return null;
+    }
+};
+
+export const getPracticeSessionResults = async (year, circuitName) => {
+    try {
+        // Find meeting key for the circuit
+        const meetingsRes = await fetch(`https://api.openf1.org/v1/meetings?year=${year}`, { next: { revalidate: 86400 } });
+        if (!meetingsRes.ok) return null;
+        const meetings = await meetingsRes.json();
+
+        // Find the matching meeting (simple substring match on circuit or location)
+        const meeting = meetings.find(m =>
+            m.circuit_short_name.toLowerCase().includes(circuitName.toLowerCase()) ||
+            m.location.toLowerCase().includes(circuitName.toLowerCase()) ||
+            circuitName.toLowerCase().includes(m.circuit_short_name.toLowerCase())
+        );
+
+        if (!meeting) return null;
+
+        // Fetch sessions for this meeting
+        const sessionsRes = await fetch(`https://api.openf1.org/v1/sessions?meeting_key=${meeting.meeting_key}`, { next: { revalidate: 86400 } });
+        if (!sessionsRes.ok) return null;
+        const sessions = await sessionsRes.json();
+
+        const practiceSessions = sessions.filter(s => s.session_name.includes('Practice'));
+        if (practiceSessions.length === 0) return null;
+
+        const results = {};
+
+        // Drivers info mapping (fetch once per meeting)
+        let driversMap = {};
+
+        for (const session of practiceSessions) {
+            const lapsRes = await fetch(`https://api.openf1.org/v1/laps?session_key=${session.session_key}`, { next: { revalidate: 3600 } });
+            if (!lapsRes.ok) continue;
+            const laps = await lapsRes.json();
+
+            if (laps.length === 0) continue;
+
+            if (Object.keys(driversMap).length === 0) {
+                // Fetch drivers for this session to get names/teams
+                const driversRes = await fetch(`https://api.openf1.org/v1/drivers?session_key=${session.session_key}`, { next: { revalidate: 86400 } });
+                if (driversRes.ok) {
+                    const driversData = await driversRes.json();
+                    driversData.forEach(d => {
+                        driversMap[d.driver_number] = {
+                            name: d.full_name || `${d.first_name} ${d.last_name}`,
+                            team: d.team_name,
+                            color: d.team_colour,
+                            code: d.name_acronym
+                        };
+                    });
+                }
+            }
+
+            // Find best lap per driver
+            const bestLaps = {};
+            laps.forEach(lap => {
+                if (lap.lap_duration && (!bestLaps[lap.driver_number] || lap.lap_duration < bestLaps[lap.driver_number].lap_duration)) {
+                    bestLaps[lap.driver_number] = lap;
+                }
+            });
+
+            // Sort and take top 3
+            const sortedDrivers = Object.values(bestLaps).sort((a, b) => a.lap_duration - b.lap_duration).slice(0, 3);
+
+            // Format output
+            results[session.session_name] = sortedDrivers.map((lap, index) => {
+                const driverInfo = driversMap[lap.driver_number] || {};
+
+                // Convert lap duration (seconds) to formatted time mm:ss.SSS
+                const minutes = Math.floor(lap.lap_duration / 60);
+                const seconds = (lap.lap_duration % 60).toFixed(3).padStart(6, '0');
+                const timeString = `${minutes}:${seconds}`;
+
+                return {
+                    position: index + 1,
+                    driver_number: lap.driver_number,
+                    name: driverInfo.name || `Driver ${lap.driver_number}`,
+                    team: driverInfo.team || 'Unknown',
+                    code: driverInfo.code || '',
+                    color: driverInfo.color ? `#${driverInfo.color}` : '#FFFFFF',
+                    time: timeString
+                };
+            });
+        }
+
+        return Object.keys(results).length > 0 ? results : null;
+    } catch (error) {
+        console.error(`Error fetching practice sessions for ${circuitName} in ${year}:`, error);
         return null;
     }
 };

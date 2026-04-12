@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
 
 const StandingsCard = ({ title, items, isTeam }) => {
     return (
@@ -30,9 +31,9 @@ const StandingsCard = ({ title, items, isTeam }) => {
             </div>
 
             <div className="flex justify-end mt-4">
-                <button className="text-[10px] uppercase tracking-widest border border-white/20 rounded-full px-4 py-2 text-white hover:bg-white/10 transition-colors">
+                <Link href="/standings" className="text-[10px] uppercase tracking-widest border border-white/20 rounded-full px-4 py-2 text-white hover:bg-white/10 transition-colors">
                     Full Standings &rarr;
-                </button>
+                </Link>
             </div>
 
         </div>
@@ -61,7 +62,7 @@ export default function Standings({ driverStandings, constructorStandings }) {
         <section className="bg-[#121212] py-12 md:py-20 px-6 md:px-8">
             <div className="container mx-auto">
                 <div className="mb-10 md:mb-12">
-                    <h4 className="text-[#FF1801] text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-2 font-condensed">2025 World Championship</h4>
+                    <h4 className="text-[#FF1801] text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-2 font-condensed">2026 World Championship</h4>
                     <h2 className="text-4xl md:text-6xl font-extrabold text-white uppercase italic tracking-tighter font-condensed leading-[0.9]">
                         Standings<br />
                         <span className="text-[#FF1801]">Snapshots</span>

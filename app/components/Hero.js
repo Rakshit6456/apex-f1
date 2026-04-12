@@ -1,29 +1,12 @@
 "use client";
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import Hyperspeed from './Hyperspeed/Hyperspeed';
-import { hyperspeedPresets } from './Hyperspeed/HyperSpeedPresets';
+import Aurora from './Aurora/Aurora';
 
 export default function Hero({ nextRace }) {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0 });
 
-    const f1HyperspeedOptions = {
-        ...hyperspeedPresets.three,
-        speedUp: 4,
-        totalSideLightSticks: 100,
-        lightPairsPerRoadWay: 80,
-        colors: {
-            ...hyperspeedPresets.three.colors,
-            roadColor: 0x080808,
-            islandColor: 0x0a0a0a,
-            background: 0x000000,
-            shoulderLines: 0xFF1801,
-            brokenLines: 0xFFFFFF,
-            leftCars: [0xFF1801, 0xFF4433, 0xFF1801],
-            rightCars: [0xFFFFFF, 0xEEEEEE, 0xFFFFFF],
-            sticks: 0xFF1801
-        }
-    };
+
 
     useEffect(() => {
         if (!nextRace) return;
@@ -50,9 +33,13 @@ export default function Hero({ nextRace }) {
 
     return (
         <section className="relative min-h-[100svh] lg:h-screen w-full bg-[#0A0A0A] overflow-hidden px-6 md:px-12 flex flex-col justify-center">
-            {/* Hyperspeed Background - Responsive positioning */}
-            <div className="absolute inset-x-0 -top-20 bottom-0 z-0 opacity-60 lg:opacity-100">
-                <Hyperspeed effectOptions={f1HyperspeedOptions} />
+            {/* Aurora Background */}
+            <div className="absolute inset-0 z-0">
+                <Aurora
+                    colorStops={["#0A0A0A", "#FF1801", "#0A0A0A"]}
+                    amplitude={1.2}
+                    speed={0.8}
+                />
             </div>
 
             {/* Background Gradient / Glow */}
