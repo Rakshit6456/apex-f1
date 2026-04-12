@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
+import PageHeader from "../components/PageHeader";
+import PageWrapper from "../components/PageWrapper";
 import { getFullSchedule2026, getNextRace } from '../utils/f1Api';
 
 export default function CalendarPage() {
@@ -62,35 +64,23 @@ export default function CalendarPage() {
     return (
         <main className="bg-[#0A0A0A] min-h-screen text-white font-sans selection:bg-[#FF1801] selection:text-white pb-20">
             <Navbar />
-
-            {/* Header */}
-            <header className="pt-32 md:pt-44 pb-12 md:pb-20 px-6 md:px-12 relative overflow-hidden bg-[#0A0A0A] border-b border-white/5">
-                <div className="absolute right-0 md:right-20 top-1/2 -translate-y-1/2 text-9xl md:text-[20rem] font-black text-white/[0.05] font-condensed pointer-events-none select-none italic translate-x-1/2 md:translate-x-0">2026</div>
-                <div className="container mx-auto relative z-10">
-                    <div className="flex items-center space-x-4 mb-6">
-                        <div className="w-8 md:w-12 h-[1px] bg-[#FF1801]"></div>
-                        <span className="text-[#FF1801] uppercase tracking-[0.2em] md:tracking-[0.4em] text-[10px] md:text-xs font-bold font-condensed">World Championship Schedule</span>
-                    </div>
-                    <h1 className="text-5xl md:text-9xl font-black text-white leading-[0.85] mb-8 uppercase italic font-condensed">
-                        Race<br />
-                        <span className="text-[#FF1801]">Calendar</span>
-                    </h1>
-                    <p className="text-gray-400 text-base md:text-lg max-w-xl font-light leading-relaxed italic">
-                        24 rounds across 21 countries. Follow the complete 2026 F1 season schedule with all circuits and dates.
-                    </p>
-
-                    <div className="flex flex-wrap gap-8 md:gap-12 mt-12">
-                        <Stat label="TOTAL RACES" val={races.length} color="text-white" />
-                        <Stat label="COMPLETED" val={completedRaces} color="text-yellow-400" />
-                        <Stat label="REMAINING" val={remainingRaces} color="text-[#FF1801]" />
-                    </div>
-                </div>
-            </header>
+            <PageWrapper>
+                <PageHeader
+                    title="Race"
+                    subtitle="Calendar"
+                    eyebrow="World Championship Schedule"
+                    watermark="2026"
+                    description="24 rounds across 21 countries. Follow the complete 2026 F1 season schedule with all circuits and dates."
+                >
+                    <Stat label="TOTAL RACES" val={races.length} color="text-white" />
+                    <Stat label="COMPLETED" val={completedRaces} color="text-yellow-400" />
+                    <Stat label="REMAINING" val={remainingRaces} color="text-[#FF1801]" />
+                </PageHeader>
 
             {/* Next Race Banner */}
             {nextRace && (
                 <section className="bg-gradient-to-r from-[#8B0000] to-[#FF1801] py-10 md:py-12 px-6 md:px-12 border-b border-white/10 relative overflow-hidden">
-                    <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+                    <div className="container-custom flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
                         <div className="text-center lg:text-left">
                             <span className="text-white/60 font-condensed text-[10px] tracking-[0.4em] uppercase font-bold">Next Race</span>
                             <h2 className="text-3xl md:text-4xl font-black text-white font-condensed uppercase italic tracking-tight">{nextRace.raceName}</h2>
@@ -134,7 +124,7 @@ export default function CalendarPage() {
 
             {/* Season Progress */}
             <section className="py-12 px-6 md:px-12 bg-[#0D0D0D] border-b border-white/5">
-                <div className="container mx-auto">
+                <div className="container-custom">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
                         <h3 className="text-2xl font-black text-white font-condensed italic uppercase tracking-tight">Season Progress</h3>
                         <div className="flex gap-8 md:gap-12">
@@ -161,7 +151,7 @@ export default function CalendarPage() {
 
             {/* Filters */}
             <div className="relative z-40 bg-[#0A0A0A] py-6 px-6 md:px-12 border-b border-white/5">
-                <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="container-custom flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex border border-white/10 rounded-sm overflow-hidden w-full md:w-auto">
                         <button
                             onClick={() => setFilter('ALL')}
@@ -190,7 +180,7 @@ export default function CalendarPage() {
 
             {/* Grid */}
             <section className="py-12 md:py-20 px-6 md:px-12">
-                <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="container-custom grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredRaces.map((race, index) => {
                         const isPast = new Date(race.date) < now && race.round !== nextRace?.round;
                         const isNext = race.round === nextRace?.round;
@@ -243,6 +233,7 @@ export default function CalendarPage() {
                     })}
                 </div>
             </section>
+            </PageWrapper>
         </main>
     );
 }

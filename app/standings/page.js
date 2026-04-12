@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect, Suspense } from 'react';
 import Navbar from '../components/Navbar';
+import PageHeader from '../components/PageHeader';
+import PageWrapper from '../components/PageWrapper';
 import { getFullDriverStandings, getFullConstructorStandings } from '../utils/f1Api';
 import './standings.css';
 
@@ -55,22 +57,16 @@ function StandingsContent() {
     return (
         <main className="min-h-screen bg-[#0A0A0A] text-white selection:bg-[#FF1801] selection:text-white pb-20">
             <Navbar />
-
-            <div className="standings-container fade-up">
-                {/* PAGE HEADER */}
-                <header className="page-header py-12 md:py-20 relative">
-                    <div className="header-watermark absolute top-0 md:top-[-40px] left-1/2 -translate-x-1/2 text-[15vw] md:text-[180px] font-extrabold text-white/5 uppercase italic tracking-tighter font-condensed pointer-events-none select-none z-0">{selectedSeason}</div>
-                    <div className="header-content relative z-10 text-center">
-                        <div className="text-[#FF1801] text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-2 font-condensed">{selectedSeason} Season</div>
-                        <h1 className="text-4xl md:text-7xl font-extrabold text-white uppercase italic tracking-tighter font-condensed leading-[0.9] mb-8">
-                            WORLD<br />
-                            <span className="text-[#FF1801]">CHAMPIONSHIP</span>
-                        </h1>
-                    </div>
-                </header>
+            <PageWrapper>
+                <PageHeader
+                    title="World"
+                    subtitle="Championship"
+                    eyebrow={`${selectedSeason} Season`}
+                    watermark={selectedSeason.toString()}
+                />
 
                 {/* VIEW TABS */}
-                <div className="view-tabs flex justify-center gap-4 mb-12 relative z-10 w-full px-4 overflow-x-auto">
+                <div className="container-custom view-tabs flex justify-center gap-4 mb-12 relative z-10 w-full px-4 overflow-x-auto">
                     <button
                         className={`px-6 md:px-12 py-3 rounded-sm text-sm font-bold uppercase font-condensed tracking-[0.2em] transition-all duration-300 border border-white/10 ${viewMode === 'DRIVERS' ? 'bg-[#FF1801] text-white border-[#FF1801]' : 'bg-transparent text-gray-400 hover:text-white hover:border-white/30'}`}
                         onClick={() => setViewMode('DRIVERS')}
@@ -91,7 +87,7 @@ function StandingsContent() {
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF1801]"></div>
                     </div>
                 ) : standingsData.length > 0 ? (
-                    <div className="standings-table-container fade-up" style={{ animationDelay: '0.2s' }}>
+                    <div className="container-custom standings-table-container fade-up" style={{ animationDelay: '0.2s' }}>
                         <table className="w-full text-left border-collapse min-w-[800px]">
                             <thead>
                                 <tr className="border-b border-white/10 bg-black/30">
@@ -175,7 +171,7 @@ function StandingsContent() {
                         <p>The championship standings for {selectedSeason} are not yet available.</p>
                     </div>
                 )}
-            </div>
+            </PageWrapper>
         </main>
     );
 }

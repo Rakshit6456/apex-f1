@@ -47,7 +47,7 @@ export default function Hero({ nextRace }) {
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent z-10 pointer-events-none"></div>
 
 
-            <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-20 h-full py-20 lg:py-0">
+            <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-20 h-full py-20 lg:py-0 px-6 md:px-12">
 
                 {/* Left Content */}
                 <div className="flex flex-col justify-center h-full pt-10 lg:pt-0">

@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '../components/Navbar';
+import PageHeader from '../components/PageHeader';
+import PageWrapper from '../components/PageWrapper';
 import { getDriversForSeason, getDriverComparisonStats } from '../utils/f1Api';
 import './head-to-head.css';
 
@@ -108,15 +110,14 @@ export default function HeadToHead() {
     return (
         <main className="head-to-head">
             <Navbar />
-
-            {/* PAGE HEADER */}
-            <header className="page-header">
-                <div className="header-content mx-auto max-w-[1400px]">
-                    <div className="header-left">
-                        <div className="page-eyebrow">Driver Comparison Tool</div>
-                        <h1 className="page-title">HEAD TO<br /><span>HEAD</span></h1>
-                        <p className="page-subtitle">Compare any two drivers across all races. See who's faster in qualifying, who finishes ahead more often, and how they stack up in every stat that matters.</p>
-                    </div>
+            <PageWrapper>
+                <PageHeader
+                    title="Head to"
+                    subtitle="Head"
+                    eyebrow="Driver Comparison Tool"
+                    watermark="VS"
+                    description="Compare any two drivers across all races. See who's faster in qualifying, who finishes ahead more often, and how they stack up in every stat that matters."
+                >
                     <div className="year-selector">
                         <div className="year-label">SELECT SEASON</div>
                         <select
@@ -129,11 +130,10 @@ export default function HeadToHead() {
                             ))}
                         </select>
                     </div>
-                </div>
-            </header>
+                </PageHeader>
 
             {/* DRIVER SELECTOR */}
-            <section className="driver-selector fade-up max-w-[1400px] mx-auto px-6 md:px-12">
+            <section className="driver-selector fade-up container-custom px-6 md:px-12">
                 <div className="selector-box" onClick={() => openModal(1)}>
                     <div className="selector-label">DRIVER 1</div>
                     <div className="selector-driver">
@@ -285,6 +285,8 @@ export default function HeadToHead() {
                     </div>
                 </div>
             )}
+
+            </PageWrapper>
 
             {loading && (
                 <div className="fixed bottom-10 right-10 bg-[#FF1801] text-white px-6 py-3 rounded-full font-bold shadow-2xl z-[100] animate-pulse">

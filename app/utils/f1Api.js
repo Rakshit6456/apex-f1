@@ -201,20 +201,31 @@ export const getSeasonSchedule = async (year) => {
 import { results2026 } from '../data/results2026';
 
 export const getRaceResults = async (year, round) => {
-    // Return mock data for 2026 if available
+    try {
+        const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/${round}/results.json`, { next: { revalidate: 3600 } });
+        if (res.ok) {
+            const data = await res.json();
+            const race = data.MRData.RaceTable.Races[0];
+            
+            if (race && race.Results) {
+                // IMPORTANT: Transform data to ensure Constructors is an array (which the UI expects)
+                race.Results = race.Results.map(r => ({
+                    ...r,
+                    Constructors: r.Constructor ? [r.Constructor] : (r.Constructors || [])
+                }));
+                return race;
+            }
+        }
+    } catch (error) {
+        console.error(`Error fetching results for ${year} round ${round}:`, error);
+    }
+
+    // Fallback to local mock data for 2026 if API fails or has no data
     if (year === 2026 && results2026[round]) {
         return results2026[round];
     }
 
-    try {
-        const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/${round}/results.json`, { next: { revalidate: 86400 } });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.MRData.RaceTable.Races[0] || null;
-    } catch (error) {
-        console.error(`Error fetching results for ${year} round ${round}:`, error);
-        return null;
-    }
+    return null;
 };
 export const getDriversForSeason = async (year) => {
     try {

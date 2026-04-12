@@ -7,6 +7,7 @@ import RecentRaces from "./components/RecentRaces";
 import CircularGallery from "./components/CircularGallery";
 import Features from "./components/Features";
 import ShinyText from "./components/ShinyText";
+import PageWrapper from "./components/PageWrapper";
 import { getNextRace, getDriverStandings, getConstructorStandings, getRecentRacesCurrent } from './utils/f1Api';
 
 export default function Home() {
@@ -58,8 +59,9 @@ export default function Home() {
   return (
     <main className="bg-[#0A0A0A] min-h-screen text-white font-sans selection:bg-[#FF1801] selection:text-white pb-20">
       <Navbar />
-      <Hero nextRace={data.nextRace} />
-      <Features />
+      <PageWrapper>
+        <Hero nextRace={data.nextRace} />
+        <Features />
 
       {/* Season Highlights Gallery */}
       <section className="h-[450px] md:h-[600px] w-full relative bg-black/50 py-10 md:py-20 border-y border-white/5 overflow-hidden">
@@ -83,8 +85,7 @@ export default function Home() {
       />
 
       <RecentRaces races={data.recentRaces} />
-
-
+      </PageWrapper>
     </main>
   );
 }
