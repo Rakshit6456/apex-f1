@@ -168,7 +168,6 @@ function ResultsContent() {
                     </div>
 
 
-
                     {selectedSeason !== new Date().getFullYear() && (
                         <div className="header-stats">
                             <div className="header-stat">
@@ -233,7 +232,7 @@ function ResultsContent() {
                             <div className="race-date-big">
                                 {new Date(raceData.date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}
                             </div>
-                            <div style={{ fontFamily: 'var(--mono)', fontSize: '9px', color: 'var(--mid)', letterSpacing: '2px', marginTop: '8px' }}>
+                            <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--mid)', letterSpacing: '2px', marginTop: '8px' }}>
                                 {raceData.Circuit.circuitName.toUpperCase()}
                             </div>
                         </div>
@@ -341,9 +340,9 @@ function ResultsContent() {
                                             </div>
                                         </td>
                                         <td><div className="r-pts">{result.points}</div></td>
-                                        <td><div style={{ fontFamily: 'var(--mono)', fontSize: '13px' }}>{result.laps}</div></td>
+                                        <td><div style={{ fontFamily: 'var(--mono)', fontSize: '14px' }}>{result.laps}</div></td>
                                         <td>
-                                            <div style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: 'var(--grey)' }}>
+                                            <div style={{ fontFamily: 'var(--mono)', fontSize: '14px', color: 'var(--grey)' }}>
                                                 {result.grid}
                                                 {parseInt(result.grid) > parseInt(result.position) && <span className="r-change">↑{parseInt(result.grid) - parseInt(result.position)}</span>}
                                                 {parseInt(result.grid) < parseInt(result.position) && <span className="r-change down">↓{parseInt(result.position) - parseInt(result.grid)}</span>}
@@ -357,7 +356,7 @@ function ResultsContent() {
                                                     {result.FastestLap.Time.time}
                                                 </div>
                                             ) : (
-                                                <div style={{ fontFamily: 'var(--mono)', fontSize: '12px' }}>{result.FastestLap?.Time.time || '—'}</div>
+                                                <div style={{ fontFamily: 'var(--mono)', fontSize: '13px' }}>{result.FastestLap?.Time.time || '—'}</div>
                                             )}
                                         </td>
                                     </tr>
@@ -417,7 +416,7 @@ function ResultsContent() {
                                 {Object.entries(practiceData).map(([sessionName, results]) => (
                                     <div key={sessionName} className="stat-card" style={{ background: 'var(--dark)' }}>
                                         <div className="stat-card-label" style={{ marginBottom: '15px' }}>{sessionName} (Top 3)</div>
-                                        <table className="results-table" style={{ fontSize: '12px' }}>
+                                        <table className="results-table" style={{ fontSize: '14px' }}>
                                             <thead>
                                                 <tr>
                                                     <th>POS</th>

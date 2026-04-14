@@ -8,6 +8,7 @@ import CircularGallery from "./components/CircularGallery";
 import Features from "./components/Features";
 import ShinyText from "./components/ShinyText";
 import PageWrapper from "./components/PageWrapper";
+import FlyingPosters from "./components/FlyingPosters";
 import { getNextRace, getDriverStandings, getConstructorStandings, getRecentRacesCurrent } from './utils/f1Api';
 
 export default function Home() {

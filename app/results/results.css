@@ -140,7 +140,7 @@
 
 .header-stat-label {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11px;
     color: var(--grey);
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -189,7 +189,7 @@
 
 .tab-round {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 2px;
     color: var(--grey);
     text-transform: uppercase;
@@ -206,7 +206,7 @@
 
 .tab-date {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     color: var(--mid);
     letter-spacing: 1px;
 }
@@ -315,7 +315,7 @@
 
 .podium-time {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11px;
     color: var(--grey);
     letter-spacing: 1px;
     text-align: center;
@@ -363,7 +363,7 @@
 
 .race-stat-label {
     font-family: var(--mono);
-    font-size: 8px;
+    font-size: 11px;
     letter-spacing: 3px;
     color: var(--grey);
     text-transform: uppercase;
@@ -379,7 +379,7 @@
 
 .race-stat-sub {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11px;
     color: var(--mid);
     letter-spacing: 1px;
     margin-top: 2px;
@@ -445,7 +445,7 @@
 
 .results-table thead th {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 3px;
     color: var(--grey);
     text-transform: uppercase;
@@ -508,7 +508,7 @@
 /* Position change indicator */
 .r-change {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     color: var(--green);
     margin-left: 6px;
 }
@@ -556,7 +556,7 @@
 
 .r-driver-team {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 1px;
     color: var(--grey);
 }
@@ -587,7 +587,7 @@
 /* Status badges */
 .r-status {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 2px;
     padding: 4px 10px;
     text-transform: uppercase;
@@ -599,7 +599,7 @@
 /* Fastest lap badge */
 .fl-badge {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 1px;
     padding: 3px 8px;
     background: rgba(180, 0, 255, 0.12);
@@ -635,7 +635,7 @@
 
 .stat-card-label {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 3px;
     color: var(--grey);
     text-transform: uppercase;
@@ -664,7 +664,7 @@
 
 .stat-item-value {
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--light-grey);
     letter-spacing: 1px;
 }
@@ -695,7 +695,7 @@
 
 .retirement-reason {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11px;
     color: #FF6666;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -729,7 +729,7 @@
 
 .season-select-label {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 2px;
     color: var(--grey);
     text-transform: uppercase;
