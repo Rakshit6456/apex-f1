@@ -8,7 +8,6 @@ import CircularGallery from "./components/CircularGallery";
 import Features from "./components/Features";
 import ShinyText from "./components/ShinyText";
 import PageWrapper from "./components/PageWrapper";
-import FlyingPosters from "./components/FlyingPosters";
 import { getNextRace, getDriverStandings, getConstructorStandings, getRecentRacesCurrent } from './utils/f1Api';
 
 export default function Home() {
@@ -59,7 +58,6 @@ export default function Home() {
 
   return (
     <main className="bg-[#0A0A0A] min-h-screen text-white font-sans selection:bg-[#FF1801] selection:text-white pb-20">
-    
       <Navbar />
       <PageWrapper>
         <Hero nextRace={data.nextRace} />

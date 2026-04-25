@@ -95,6 +95,7 @@ function StandingsContent() {
                                     {viewMode === 'DRIVERS' && <th className="py-5 pr-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed">DRIVER</th>}
                                     <th className="py-5 pr-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed">{viewMode === 'DRIVERS' ? 'TEAM' : 'CONSTRUCTOR'}</th>
                                     <th className="py-5 px-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed text-right">PTS</th>
+                                    <th className="py-5 px-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed text-center hide-mobile">PODIUMS</th>
                                     <th className="py-5 px-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed text-center hide-mobile">WINS</th>
                                 </tr>
                             </thead>
@@ -154,6 +155,9 @@ function StandingsContent() {
                                                     <span className="text-2xl font-bold text-[#FFCC00] leading-none tabular-nums tracking-tighter font-condensed">{item.points}</span>
                                                     <span className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">PTS</span>
                                                 </div>
+                                            </td>
+                                            <td className="py-4 px-6 text-center hide-mobile">
+                                                <div className="text-xl text-white/30 font-bold font-condensed tabular-nums">{item.podiums}</div>
                                             </td>
                                             <td className="py-4 px-6 text-center hide-mobile">
                                                 <div className="text-xl text-white/30 font-bold font-condensed tabular-nums">{item.wins}</div>

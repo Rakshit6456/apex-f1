@@ -2,11 +2,50 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Aurora from './Aurora/Aurora';
+import Hyperspeed from './Hyperspeed/Hyperspeed';
 
 export default function Hero({ nextRace }) {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0 });
 
 
+
+    const hyperspeedOptions = {
+        onSpeedUp: () => { },
+        onSlowDown: () => { },
+        distortion: 'turbulentDistortion',
+        length: 400,
+        roadWidth: 10,
+        islandWidth: 2,
+        lanesPerRoad: 4,
+        fov: 90,
+        fovSpeedUp: 150,
+        speedUp: 2,
+        carLightsFade: 0.4,
+        totalSideLightSticks: 20,
+        lightPairsPerRoadWay: 40,
+        shoulderLinesWidthPercentage: 0.05,
+        brokenLinesWidthPercentage: 0.1,
+        brokenLinesLengthPercentage: 0.5,
+        lightStickWidth: [0.12, 0.5],
+        lightStickHeight: [1.3, 1.7],
+        movingAwaySpeed: [60, 80],
+        movingCloserSpeed: [-120, -160],
+        carLightsLength: [400 * 0.03, 400 * 0.2],
+        carLightsRadius: [0.05, 0.14],
+        carWidthPercentage: [0.3, 0.5],
+        carShiftX: [-0.8, 0.8],
+        carFloorSeparation: [0, 5],
+        colors: {
+            roadColor: 0x080808,
+            islandColor: 0x0a0a0a,
+            background: 0x000000,
+            shoulderLines: 0xffffff,
+            brokenLines: 0xffffff,
+            leftCars: [0xFF1801, 0x8B0000, 0x710800],
+            rightCars: [0xFF1801, 0x8B0000, 0x710800],
+            sticks: 0xFF1801
+        }
+    };
 
     useEffect(() => {
         if (!nextRace) return;
@@ -33,13 +72,8 @@ export default function Hero({ nextRace }) {
 
     return (
         <section className="relative min-h-[100svh] lg:h-screen w-full bg-[#0A0A0A] overflow-hidden px-6 md:px-12 flex flex-col justify-center">
-            {/* Aurora Background */}
-            <div className="absolute inset-0 z-0">
-                <Aurora
-                    colorStops={["#0A0A0A", "#FF1801", "#0A0A0A"]}
-                    amplitude={1.2}
-                    speed={0.8}
-                />
+            {/* Hyperspeed Background Overlay */}
+            <div className="absolute inset-0 z-0 opacity-40">
             </div>
 
             {/* Background Gradient / Glow */}
@@ -102,8 +136,7 @@ export default function Hero({ nextRace }) {
                         </div>
                     )}
 
-                    {/* Radial Background behind car */}
-                    <div className="absolute inset-x-0 h-[300px] lg:h-[500px] bg-[radial-gradient(circle_at_center,_rgba(60,60,60,0.3)_0%,_rgba(0,0,0,0)_70%)] z-0 rounded-full blur-3xl translate-y-10"></div>
+
 
                     {/* Car Container - Responsive scaling */}
                     <div className="relative w-full h-48 md:h-64 lg:h-80 mt-12 lg:mt-24 scale-100 md:scale-125 lg:translate-x-10 translate-y-4 z-10">

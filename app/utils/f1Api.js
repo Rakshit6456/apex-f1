@@ -38,7 +38,37 @@ export const getFullDriverStandings = async (year) => {
     try {
         const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/driverStandings.json`, { next: { revalidate: 86400 } });
         const data = await res.json();
-        return data.MRData.StandingsTable.StandingsLists[0]?.DriverStandings || [];
+        const standings = data.MRData.StandingsTable.StandingsLists[0]?.DriverStandings || [];
+
+        // Calculate podiums
+        let podiumsMap = {};
+        if (parseInt(year) === 2026) {
+            Object.values(results2026).forEach(race => {
+                race.Results.slice(0, 3).forEach(r => {
+                    const id = r.Driver.driverId;
+                    podiumsMap[id] = (podiumsMap[id] || 0) + 1;
+                });
+            });
+        } else {
+            try {
+                const resultsRes = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/results.json?limit=1000`, { next: { revalidate: 86400 } });
+                const resultsData = await resultsRes.json();
+                const races = resultsData.MRData.RaceTable.Races || [];
+                races.forEach(race => {
+                    race.Results.slice(0, 3).forEach(r => {
+                        const id = r.Driver.driverId;
+                        podiumsMap[id] = (podiumsMap[id] || 0) + 1;
+                    });
+                });
+            } catch (e) {
+                console.error("Error fetching results for podium calculation:", e);
+            }
+        }
+
+        return standings.map(s => ({
+            ...s,
+            podiums: (podiumsMap[s.Driver.driverId] || 0).toString()
+        }));
     } catch (error) {
         console.error(`Error fetching full driver standings for ${year}:`, error);
         return [];
@@ -49,7 +79,37 @@ export const getFullConstructorStandings = async (year) => {
     try {
         const res = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/constructorStandings.json`, { next: { revalidate: 86400 } });
         const data = await res.json();
-        return data.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings || [];
+        const standings = data.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings || [];
+
+        // Calculate podiums
+        let podiumsMap = {};
+        if (parseInt(year) === 2026) {
+            Object.values(results2026).forEach(race => {
+                race.Results.slice(0, 3).forEach(r => {
+                    const id = r.Constructor.constructorId;
+                    podiumsMap[id] = (podiumsMap[id] || 0) + 1;
+                });
+            });
+        } else {
+            try {
+                const resultsRes = await fetch(`https://api.jolpi.ca/ergast/f1/${year}/results.json?limit=1000`, { next: { revalidate: 86400 } });
+                const resultsData = await resultsRes.json();
+                const races = resultsData.MRData.RaceTable.Races || [];
+                races.forEach(race => {
+                    race.Results.slice(0, 3).forEach(r => {
+                        const id = r.Constructor.constructorId;
+                        podiumsMap[id] = (podiumsMap[id] || 0) + 1;
+                    });
+                });
+            } catch (e) {
+                console.error("Error fetching results for podium calculation:", e);
+            }
+        }
+
+        return standings.map(s => ({
+            ...s,
+            podiums: (podiumsMap[s.Constructor.constructorId] || 0).toString()
+        }));
     } catch (error) {
         console.error(`Error fetching full constructor standings for ${year}:`, error);
         return [];
