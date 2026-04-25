@@ -59,6 +59,7 @@ export default function Home() {
 
   return (
     <main className="bg-[#0A0A0A] min-h-screen text-white font-sans selection:bg-[#FF1801] selection:text-white pb-20">
+    
       <Navbar />
       <PageWrapper>
         <Hero nextRace={data.nextRace} />

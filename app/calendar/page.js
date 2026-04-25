@@ -199,25 +199,25 @@ export default function CalendarPage() {
 
                                 <div className="p-8">
                                     <div className="flex justify-between items-start mb-6">
-                                        <span className="text-gray-500 font-condensed text-[10px] font-black tracking-[0.2em] uppercase">Round {race.round.padStart(2, '0')}</span>
-                                        <span className={`text-[9px] font-black tracking-widest uppercase px-3 py-1 rounded-sm ${isPast ? 'bg-white/5 text-gray-500' : 'border border-[#FFD700] text-[#FFD700]'}`}>
+                                        <span className="text-gray-500 font-condensed text-xs font-black tracking-[0.2em] uppercase">Round {race.round.padStart(2, '0')}</span>
+                                        <span className={`text-[11px] font-black tracking-widest uppercase px-3 py-1 rounded-sm ${isPast ? 'bg-white/5 text-gray-500' : 'border border-[#FFD700] text-[#FFD700]'}`}>
                                             {isPast ? 'FINISHED' : 'UPCOMING'}
                                         </span>
                                     </div>
 
                                     <div className="text-4xl mb-4">{getFlagEmoji(race.Circuit.Location.country)}</div>
-                                    <h3 className="text-2xl font-black text-white font-condensed uppercase italic leading-tight mb-1 group-hover:text-[#FF1801] transition-colors">{race.raceName}</h3>
-                                    <p className="text-gray-500 font-condensed text-xs uppercase tracking-widest mb-8">{race.Circuit.Location.locality}, {race.Circuit.Location.country}</p>
+                                    <h3 className="text-3xl font-black text-white font-condensed uppercase italic leading-tight mb-1 group-hover:text-[#FF1801] transition-colors">{race.raceName}</h3>
+                                    <p className="text-gray-500 font-condensed text-sm uppercase tracking-widest mb-8">{race.Circuit.Location.locality}, {race.Circuit.Location.country}</p>
 
                                     <div className="flex justify-between items-end">
                                         <div>
-                                            <div className={`text-lg font-black font-condensed uppercase italic ${isNext ? 'text-[#FF1801]' : 'text-gray-300'}`}>
+                                            <div className={`text-xl font-black font-condensed uppercase italic ${isNext ? 'text-[#FF1801]' : 'text-gray-300'}`}>
                                                 {race.dateRange || new Date(race.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                                             </div>
-                                            <div className="text-[10px] text-gray-500 font-bold tracking-widest uppercase">2026</div>
+                                            <div className="text-xs text-gray-500 font-bold tracking-widest uppercase">2026</div>
                                         </div>
                                         {!isPast && (
-                                            <div className={`text-[10px] font-black uppercase tracking-widest ${isNext ? 'text-[#FF1801]' : 'text-gray-600'}`}>
+                                            <div className={`text-xs font-black uppercase tracking-widest ${isNext ? 'text-[#FF1801]' : 'text-gray-600'}`}>
                                                 IN {Math.ceil((new Date(race.date) - now) / (1000 * 60 * 60 * 24))} DAYS
                                             </div>
                                         )}
@@ -225,8 +225,8 @@ export default function CalendarPage() {
                                 </div>
 
                                 <div className="px-8 py-5 bg-black/40 border-t border-white/5 flex justify-between items-center group-hover:bg-[#FF1801]/5 transition-colors">
-                                    <span className="text-[9px] text-gray-600 font-bold uppercase tracking-widest truncate max-w-[180px]">{race.Circuit.circuitName}</span>
-                                    <span className="text-[10px] text-[#FF1801] font-black uppercase tracking-widest italic opacity-0 group-hover:opacity-100 transition-all">Details →</span>
+                                    <span className="text-xs text-gray-600 font-bold uppercase tracking-widest truncate max-w-[180px]">{race.Circuit.circuitName}</span>
+                                    <span className="text-xs text-[#FF1801] font-black uppercase tracking-widest italic opacity-0 group-hover:opacity-100 transition-all">Details →</span>
                                 </div>
                             </div>
                         );
