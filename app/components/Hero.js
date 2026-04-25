@@ -1,10 +1,12 @@
 "use client";
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Aurora from './Aurora/Aurora';
 import Hyperspeed from './Hyperspeed/Hyperspeed';
 
 export default function Hero({ nextRace }) {
+    const router = useRouter();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0 });
 
 
@@ -72,11 +74,9 @@ export default function Hero({ nextRace }) {
 
     return (
         <section className="relative min-h-[100svh] lg:h-screen w-full bg-[#0A0A0A] overflow-hidden px-6 md:px-12 flex flex-col justify-center">
-            {/* Hyperspeed Background Overlay */}
             <div className="absolute inset-0 z-0 opacity-40">
             </div>
 
-            {/* Background Gradient / Glow */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/80 lg:via-transparent to-transparent z-10 pointer-events-none"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent z-10 pointer-events-none"></div>
 
@@ -102,7 +102,10 @@ export default function Hero({ nextRace }) {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-6">
-                        <button className="bg-[#B90E0A] hover:bg-[#FF1801] text-white px-10 py-4 rounded-sm text-sm font-bold uppercase tracking-[0.2em] italic font-condensed skew-x-[-15deg] transition-all transform hover:scale-105 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.5)]">
+                        <button
+                            onClick={() => router.push('/results')}
+                            className="bg-[#B90E0A] hover:bg-[#FF1801] text-white px-10 py-4 rounded-sm text-sm font-bold uppercase tracking-[0.2em] italic font-condensed skew-x-[-15deg] transition-all transform hover:scale-105 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.5)] cursor-pointer"
+                        >
                             <span className="block skew-x-[15deg]">Explore Season</span>
                         </button>
                     </div>
