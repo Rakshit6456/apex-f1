@@ -28,6 +28,7 @@ export default function Navbar() {
     { name: 'Results', href: '/results' },
     { name: 'Standings', href: '/standings' },
     { name: 'Head-to-Head', href: '/head-to-head' },
+    { name: 'News', href: '/news' },
   ];
 
   return (

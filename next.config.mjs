@@ -5,6 +5,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'cdn-8.motorsport.com' },
       { protocol: 'https', hostname: 'encrypted-tbn0.gstatic.com' },
       { protocol: 'https', hostname: 'news.files.bbci.co.uk' },
+      { protocol: 'https', hostname: 'ichef.bbci.co.uk' },
       { protocol: 'https', hostname: 'media.formula1.com' },
       { protocol: 'https', hostname: 'www.thetimes.com' },
       { protocol: 'https', hostname: 'picsum.photos' },
