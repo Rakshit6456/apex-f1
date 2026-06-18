@@ -78,7 +78,7 @@ function FeaturedCard({ article }) {
                             </span>
                         </div>
 
-                        <h2 className="text-2xl md:text-3xl font-black text-white uppercase italic font-condensed tracking-tight leading-tight mb-5 group-hover:text-[#FF1801] transition-colors duration-300">
+                        <h2 className="text-2xl md:text-3xl font-black text-white uppercase font-condensed tracking-tight leading-tight mb-5 group-hover:text-[#FF1801] transition-colors duration-300">
                             {article.title}
                         </h2>
 
@@ -127,29 +127,29 @@ function NewsCard({ article }) {
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-1">
                     <div className="flex items-center space-x-2 mb-3">
-                        <span className="text-[10px] uppercase tracking-widest text-[#FF1801] font-bold font-condensed">
+                        <span className="text-xs uppercase tracking-widest text-[#FF1801] font-bold font-condensed">
                             {article.category || 'Formula 1'}
                         </span>
                         <span className="text-white/20">·</span>
-                        <span className="text-[10px] uppercase tracking-widest text-gray-500 font-condensed flex items-center gap-1">
-                            <Clock size={9} />
+                        <span className="text-xs uppercase tracking-widest text-gray-400 font-condensed flex items-center gap-1.5">
+                            <Clock size={11} />
                             {formatDate(article.pubDate)}
                         </span>
                     </div>
 
-                    <h3 className="text-sm font-extrabold text-white uppercase italic font-condensed tracking-tight leading-snug mb-3 group-hover:text-[#FF1801] transition-colors duration-300 line-clamp-3 flex-1">
+                    <h3 className="text-lg font-semibold text-white uppercase font-condensed tracking-tight leading-snug mb-3 group-hover:text-[#FF1801] transition-colors duration-300 line-clamp-3 flex-1">
                         {article.title}
                     </h3>
 
                     {article.description && (
-                        <p className="text-gray-500 text-xs leading-relaxed mb-4 line-clamp-2">
+                        <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
                             {article.description}
                         </p>
                     )}
 
-                    <div className="flex items-center text-[10px] text-[#FF1801] font-bold uppercase font-condensed tracking-widest gap-1.5 group-hover:gap-2.5 transition-all duration-300 mt-auto pt-2 border-t border-white/5">
+                    <div className="flex items-center text-xs text-[#FF1801] font-bold uppercase font-condensed tracking-widest gap-1.5 group-hover:gap-2.5 transition-all duration-300 mt-auto pt-2 border-t border-white/5">
                         Read More
-                        <ExternalLink size={10} />
+                        <ExternalLink size={12} />
                     </div>
                 </div>
             </SpotlightCard>
@@ -163,16 +163,23 @@ export default function NewsPage() {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        fetch('/api/news')
-            .then(res => res.json())
-            .then(data => {
-                setArticles(data.articles || []);
-                setLoading(false);
-            })
-            .catch(() => {
-                setError(true);
-                setLoading(false);
-            });
+        function fetchNews() {
+            fetch(`/api/news?t=${Date.now()}`)
+                .then(res => res.json())
+                .then(data => {
+                    setArticles(data.articles || []);
+                    setLoading(false);
+                    setError(false);
+                })
+                .catch(() => {
+                    setError(true);
+                    setLoading(false);
+                });
+        }
+
+        fetchNews();
+        const interval = setInterval(fetchNews, 30 * 60 * 1000);
+        return () => clearInterval(interval);
     }, []);
 
     const featured = articles[0];
