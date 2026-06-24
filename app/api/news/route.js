@@ -40,7 +40,7 @@ function parseRSSItems(xml) {
             ? extractCDATA(categoryMatches[0][1])
             : 'Formula 1';
 
-        if (title && link) {
+        if (title && link && link.includes('formula1')) {
             items.push({ title, description, link, pubDate, image, category });
         }
     }
