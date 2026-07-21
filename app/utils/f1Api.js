@@ -557,6 +557,48 @@ export const getCircuitHistoricalResults = async (circuitId) => {
     }
 };
 
+export const getCircuitInsights = async (circuitId) => {
+    if (!circuitId) return { noHistory: true };
+    try {
+        // One call: every race winner ever recorded at this circuit.
+        const res = await fetch(`https://api.jolpi.ca/ergast/f1/circuits/${circuitId}/results/1.json?limit=100`, { next: { revalidate: 604800 } });
+        if (!res.ok) throw new Error('not ok');
+        const data = await res.json();
+        const races = data.MRData?.RaceTable?.Races || [];
+        if (races.length === 0) return { noHistory: true };
+
+        const bySeasonAsc = [...races].sort((a, b) => parseInt(a.season) - parseInt(b.season));
+        const firstRace = bySeasonAsc[0];
+        const lastYearRace = races.find(r => r.season === '2025');
+
+        const winsByConstructor = {};
+        races.forEach(r => {
+            const ctor = r.Results?.[0]?.Constructor;
+            if (!ctor) return;
+            if (!winsByConstructor[ctor.constructorId]) {
+                winsByConstructor[ctor.constructorId] = { name: ctor.name, wins: 0 };
+            }
+            winsByConstructor[ctor.constructorId].wins += 1;
+        });
+        const mostSuccessfulConstructor = Object.values(winsByConstructor)
+            .sort((a, b) => b.wins - a.wins)[0] || null;
+
+        return {
+            noHistory: false,
+            firstHeld: firstRace.season,
+            totalRacesRecorded: races.length,
+            lastYearWinner: lastYearRace ? {
+                name: `${lastYearRace.Results[0].Driver.givenName} ${lastYearRace.Results[0].Driver.familyName}`,
+                team: lastYearRace.Results[0].Constructor.name,
+            } : null,
+            mostSuccessfulConstructor,
+        };
+    } catch (error) {
+        console.error(`Error fetching circuit insights for ${circuitId}:`, error);
+        return null;
+    }
+};
+
 export const getDriverForm = async (driverId) => {
     try {
         const res = await fetch(`https://api.jolpi.ca/ergast/f1/current/drivers/${driverId}/results.json?limit=5`, { next: { revalidate: 86400 } });

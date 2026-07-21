@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import PageHeader from "../components/PageHeader";
 import PageWrapper from "../components/PageWrapper";
+import RaceDetailsModal from "../components/RaceDetailsModal";
 import { getFullSchedule2026, getNextRace } from '../utils/f1Api';
 
 export default function CalendarPage() {
@@ -12,6 +13,7 @@ export default function CalendarPage() {
     const [loading, setLoading] = useState(true);
     const [mounted, setMounted] = useState(false);
     const [now, setNow] = useState(new Date());
+    const [selectedRace, setSelectedRace] = useState(null);
 
     useEffect(() => {
         setMounted(true);
@@ -188,7 +190,11 @@ export default function CalendarPage() {
                         return (
                             <div
                                 key={race.round}
-                                className={`group relative bg-[#0F0F0F] border-t-4 transition-all hover:-translate-y-1 ${isPast ? 'opacity-50 border-gray-700' : isNext ? 'border-[#FF1801] bg-[#151515]' : 'border-white/10'}`}
+                                onClick={() => setSelectedRace(race)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedRace(race); } }}
+                                className={`group relative bg-[#0F0F0F] border-t-4 transition-all hover:-translate-y-1 cursor-pointer ${isPast ? 'opacity-50 border-gray-700' : isNext ? 'border-[#FF1801] bg-[#151515]' : 'border-white/10'}`}
                                 style={{ animationDelay: `${index * 0.05}s` }}
                             >
                                 {isNext && (
@@ -234,6 +240,12 @@ export default function CalendarPage() {
                 </div>
             </section>
             </PageWrapper>
+
+            <RaceDetailsModal
+                race={selectedRace}
+                isOpen={!!selectedRace}
+                onClose={() => setSelectedRace(null)}
+            />
         </main>
     );
 }
