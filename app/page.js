@@ -9,6 +9,7 @@ import Features from "./components/Features";
 import ShinyText from "./components/ShinyText";
 import PageWrapper from "./components/PageWrapper";
 import { getNextRace, getDriverStandings, getConstructorStandings, getRecentRacesCurrent } from './utils/f1Api';
+import { Analytics } from "@vercel/analytics/next"
 
 export default function Home() {
   const [data, setData] = useState({
@@ -86,6 +87,7 @@ export default function Home() {
 
       <RecentRaces races={data.recentRaces} />
       </PageWrapper>
+      <Analytics />
     </main>
   );
 }
