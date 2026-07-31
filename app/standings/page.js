@@ -3,9 +3,30 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Navbar from '../components/Navbar';
 import PageHeader from '../components/PageHeader';
 import PageWrapper from '../components/PageWrapper';
-import { getFullDriverStandings, getFullConstructorStandings } from '../utils/f1Api';
-import { getNationalityFlag } from '../utils/flags';
+import { getFullDriverStandings, getFullConstructorStandings, getDriverHeadshots } from '../utils/f1Api';
+import { getNationalityCode } from '../utils/flags';
 import './standings.css';
+
+function DriverAvatar({ driver, headshotUrl }) {
+    const [imgFailed, setImgFailed] = useState(false);
+
+    if (headshotUrl && !imgFailed) {
+        return (
+            <img
+                src={headshotUrl}
+                alt={`${driver.givenName} ${driver.familyName}`}
+                onError={() => setImgFailed(true)}
+                className="w-10 h-10 rounded-full object-cover bg-white/5 border border-white/10 flex-shrink-0"
+            />
+        );
+    }
+
+    return (
+        <div className="w-10 h-10 rounded-full bg-[#FF1801]/10 text-[#FF1801] flex items-center justify-center text-xs font-bold font-condensed flex-shrink-0">
+            {driver.permanentNumber || driver.code || '?'}
+        </div>
+    );
+}
 
 const getTeamColor = (teamName) => {
     if (!teamName) return '#FFFFFF';
@@ -33,6 +54,7 @@ function StandingsContent() {
     const [selectedSeason, setSelectedSeason] = useState(defaultSeason);
     const [viewMode, setViewMode] = useState('DRIVERS'); // DRIVERS or CONSTRUCTORS
     const [standingsData, setStandingsData] = useState([]);
+    const [headshots, setHeadshots] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -40,8 +62,12 @@ function StandingsContent() {
             setLoading(true);
             try {
                 if (viewMode === 'DRIVERS') {
-                    const data = await getFullDriverStandings(selectedSeason);
+                    const [data, headshotMap] = await Promise.all([
+                        getFullDriverStandings(selectedSeason),
+                        getDriverHeadshots()
+                    ]);
                     setStandingsData(data);
+                    setHeadshots(headshotMap);
                 } else {
                     const data = await getFullConstructorStandings(selectedSeason);
                     setStandingsData(data);
@@ -94,6 +120,7 @@ function StandingsContent() {
                                 <tr className="border-b border-white/10 bg-black/30">
                                     <th className="py-5 px-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed">POS</th>
                                     {viewMode === 'DRIVERS' && <th className="py-5 pr-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed">DRIVER</th>}
+                                    {viewMode === 'DRIVERS' && <th className="py-5 pr-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed">NATIONALITY</th>}
                                     <th className="py-5 pr-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed">{viewMode === 'DRIVERS' ? 'TEAM' : 'CONSTRUCTOR'}</th>
                                     <th className="py-5 px-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed text-right">PTS</th>
                                     <th className="py-5 px-6 text-xs text-gray-400 font-bold uppercase tracking-[0.2em] font-condensed text-center hide-mobile">PODIUMS</th>
@@ -127,12 +154,22 @@ function StandingsContent() {
                                             {isDriverView && (
                                                 <td className="py-4 pr-6">
                                                     <div className="flex items-center gap-4">
-                                                        <div className="w-1 h-8 rounded-sm" style={{ background: teamColor }}></div>
-                                                        <span className="text-xl" title={item.Driver.nationality}>{getNationalityFlag(item.Driver.nationality)}</span>
+                                                        <DriverAvatar
+                                                            driver={item.Driver}
+                                                            headshotUrl={headshots[item.Driver.permanentNumber] || headshots[item.Driver.code]}
+                                                        />
                                                         <div className="flex flex-col">
                                                             <div className="text-lg font-bold font-condensed uppercase tracking-wide leading-tight">{item.Driver.givenName} {item.Driver.familyName}</div>
                                                         </div>
                                                     </div>
+                                                </td>
+                                            )}
+
+                                            {isDriverView && (
+                                                <td className="py-4 pr-6">
+                                                    <span className="text-sm font-bold font-condensed tracking-widest text-gray-400">
+                                                        {getNationalityCode(item.Driver.nationality)}
+                                                    </span>
                                                 </td>
                                             )}
 

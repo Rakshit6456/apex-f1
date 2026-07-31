@@ -43,3 +43,49 @@ const NATIONALITY_FLAGS = {
 };
 
 export const getNationalityFlag = (nationality) => NATIONALITY_FLAGS[nationality] || '🏁';
+
+// Short 3-letter country codes in the style F1 broadcasts/timing screens use
+// (e.g. "NED" for Dutch, "GER" for German) rather than strict ISO 3166-1 alpha-3.
+const NATIONALITY_CODES = {
+    American: 'USA',
+    Argentine: 'ARG',
+    Australian: 'AUS',
+    Austrian: 'AUT',
+    Belgian: 'BEL',
+    Brazilian: 'BRA',
+    British: 'GBR',
+    Canadian: 'CAN',
+    Chilean: 'CHI',
+    Chinese: 'CHN',
+    Colombian: 'COL',
+    Czech: 'CZE',
+    Danish: 'DEN',
+    Dutch: 'NED',
+    Emirati: 'UAE',
+    Estonian: 'EST',
+    Finnish: 'FIN',
+    French: 'FRA',
+    German: 'GER',
+    Hungarian: 'HUN',
+    Indian: 'IND',
+    Indonesian: 'INA',
+    Irish: 'IRL',
+    Italian: 'ITA',
+    Japanese: 'JPN',
+    Malaysian: 'MAS',
+    Mexican: 'MEX',
+    Monegasque: 'MON',
+    'New Zealander': 'NZL',
+    Polish: 'POL',
+    Portuguese: 'POR',
+    Russian: 'RUS',
+    Saudi: 'KSA',
+    'South African': 'RSA',
+    Spanish: 'ESP',
+    Swedish: 'SWE',
+    Swiss: 'SUI',
+    Thai: 'THA',
+    Venezuelan: 'VEN',
+};
+
+export const getNationalityCode = (nationality) => NATIONALITY_CODES[nationality] || nationality?.slice(0, 3).toUpperCase() || '—';

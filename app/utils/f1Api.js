@@ -448,6 +448,27 @@ export const getDriverComparisonStats = async (year, driverId) => {
     }
 };
 
+// Returns a map keyed by driver number AND by driver code (name_acronym) -> headshot_url,
+// sourced from OpenF1 (Jolpi/Ergast has no image data at all).
+export const getDriverHeadshots = async () => {
+    try {
+        const res = await fetch('https://api.openf1.org/v1/drivers?session_key=latest', { next: { revalidate: 86400 } });
+        if (!res.ok) return {};
+        const drivers = await res.json();
+
+        const map = {};
+        drivers.forEach(d => {
+            if (!d.headshot_url) return;
+            if (d.driver_number != null) map[d.driver_number] = d.headshot_url;
+            if (d.name_acronym) map[d.name_acronym] = d.headshot_url;
+        });
+        return map;
+    } catch (error) {
+        console.error('Error fetching driver headshots:', error);
+        return {};
+    }
+};
+
 export const getPracticeSessionResults = async (year, circuitName) => {
     try {
         // Find meeting key for the circuit
