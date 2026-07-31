@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import PageHeader from '../components/PageHeader';
 import PageWrapper from '../components/PageWrapper';
 import { getFullDriverStandings, getFullConstructorStandings } from '../utils/f1Api';
+import { getNationalityFlag } from '../utils/flags';
 import './standings.css';
 
 const getTeamColor = (teamName) => {
@@ -127,6 +128,7 @@ function StandingsContent() {
                                                 <td className="py-4 pr-6">
                                                     <div className="flex items-center gap-4">
                                                         <div className="w-1 h-8 rounded-sm" style={{ background: teamColor }}></div>
+                                                        <span className="text-xl" title={item.Driver.nationality}>{getNationalityFlag(item.Driver.nationality)}</span>
                                                         <div className="flex flex-col">
                                                             <div className="text-lg font-bold font-condensed uppercase tracking-wide leading-tight">{item.Driver.givenName} {item.Driver.familyName}</div>
                                                         </div>
