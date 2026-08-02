@@ -448,6 +448,13 @@ export const getDriverComparisonStats = async (year, driverId) => {
     }
 };
 
+// F1's media CDN serves a generic "no photo available" silhouette icon for drivers it hasn't
+// shot yet (e.g. brand-new rookies), rather than a 404 — so headshot_url is always present even
+// when there's no real photo. That silhouette and every real photo happen to be resized to the
+// same 93x93 dimensions, so pixel size can't tell them apart, but the flat silhouette compresses
+// to ~700 bytes vs. ~4500+ bytes for an actual photo, so byte size is used as the filter instead.
+const MIN_HEADSHOT_BYTES = 1500;
+
 // Returns a map keyed by driver number AND by driver code (name_acronym) -> headshot_url,
 // sourced from OpenF1 (Jolpi/Ergast has no image data at all).
 export const getDriverHeadshots = async () => {
@@ -456,9 +463,20 @@ export const getDriverHeadshots = async () => {
         if (!res.ok) return {};
         const drivers = await res.json();
 
+        const withRealPhotos = await Promise.all(drivers.map(async (d) => {
+            if (!d.headshot_url) return null;
+            try {
+                const headRes = await fetch(d.headshot_url, { method: 'HEAD' });
+                const size = parseInt(headRes.headers.get('content-length') || '0', 10);
+                return size >= MIN_HEADSHOT_BYTES ? d : null;
+            } catch {
+                return null;
+            }
+        }));
+
         const map = {};
-        drivers.forEach(d => {
-            if (!d.headshot_url) return;
+        withRealPhotos.forEach(d => {
+            if (!d) return;
             if (d.driver_number != null) map[d.driver_number] = d.headshot_url;
             if (d.name_acronym) map[d.name_acronym] = d.headshot_url;
         });

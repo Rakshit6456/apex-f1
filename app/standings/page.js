@@ -6,6 +6,7 @@ import PageWrapper from '../components/PageWrapper';
 import { getFullDriverStandings, getFullConstructorStandings, getDriverHeadshots } from '../utils/f1Api';
 import { getNationalityCode } from '../utils/flags';
 import { getConstructorLogo } from '../utils/constructorLogos';
+import { getDriverPhotoOverride } from '../utils/driverPhotos';
 import './standings.css';
 
 function DriverAvatar({ driver, headshotUrl }) {
@@ -180,7 +181,7 @@ function StandingsContent() {
                                                     <div className="flex items-center gap-4">
                                                         <DriverAvatar
                                                             driver={item.Driver}
-                                                            headshotUrl={headshots[item.Driver.permanentNumber] || headshots[item.Driver.code]}
+                                                            headshotUrl={getDriverPhotoOverride(item.Driver.code) || headshots[item.Driver.permanentNumber] || headshots[item.Driver.code]}
                                                         />
                                                         <div className="flex flex-col">
                                                             <div className="text-lg font-bold font-condensed uppercase tracking-wide leading-tight">{item.Driver.givenName} {item.Driver.familyName}</div>
