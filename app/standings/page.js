@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader';
 import PageWrapper from '../components/PageWrapper';
 import { getFullDriverStandings, getFullConstructorStandings, getDriverHeadshots } from '../utils/f1Api';
 import { getNationalityCode } from '../utils/flags';
+import { getConstructorLogo } from '../utils/constructorLogos';
 import './standings.css';
 
 function DriverAvatar({ driver, headshotUrl }) {
@@ -24,6 +25,29 @@ function DriverAvatar({ driver, headshotUrl }) {
     return (
         <div className="w-10 h-10 rounded-full bg-[#FF1801]/10 text-[#FF1801] flex items-center justify-center text-xs font-bold font-condensed flex-shrink-0">
             {driver.permanentNumber || driver.code || '?'}
+        </div>
+    );
+}
+
+function ConstructorLogo({ teamName }) {
+    const [imgFailed, setImgFailed] = useState(false);
+    const logo = getConstructorLogo(teamName);
+
+    if (logo && !imgFailed) {
+        const isCover = logo.fit === 'cover';
+        return (
+            <img
+                src={logo.url}
+                alt={teamName}
+                onError={() => setImgFailed(true)}
+                className={`w-10 h-10 rounded-full border border-white/10 flex-shrink-0 ${isCover ? 'object-cover' : 'object-contain bg-white p-1.5'}`}
+            />
+        );
+    }
+
+    return (
+        <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold font-condensed text-gray-400 flex-shrink-0">
+            {(teamName || '?').slice(0, 3).toUpperCase()}
         </div>
     );
 }
@@ -175,7 +199,7 @@ function StandingsContent() {
 
                                             <td className="py-4 pr-6">
                                                 <div className="flex items-center gap-4">
-                                                    {!isDriverView && <div className="w-1 h-8 rounded-sm" style={{ background: teamColor }}></div>}
+                                                    {!isDriverView && <ConstructorLogo teamName={teamName} />}
                                                     <div className="flex flex-col">
                                                         <div className={!isDriverView ? 'text-lg font-bold font-condensed uppercase tracking-wide leading-tight' : 'text-xs uppercase tracking-widest leading-none'} style={{ color: !isDriverView ? '#fff' : teamColor }}>
                                                             {teamName || 'Unknown'}
